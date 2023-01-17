@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../Images/icon.ico</file>
+        <file>../Images/background.png</file>
+        <file>../Images/wall_0.png</file>
+        <file>../Images/wall_1.png</file>
+        <file>../Images/wall_2.png</file>
+        <file>../Images/wall_3.png</file>
+        <file>../Images/way.png</file>
+        <file>../Images/restart_hover.png</file>
+        <file>../Images/restart_normal.png</file>
+        <file>../Images/find_hover.png</file>
+        <file>../Images/find_normal.png</file>
+        <file>../Images/player.png</file>
+        <file>../Images/finish.png</file>
+    </qresource>
+</RCC>
