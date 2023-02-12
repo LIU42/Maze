@@ -23,102 +23,102 @@ void Player::setIsOnMove(bool isOnMove)
 
 void Player::move()
 {
-	static Real real;
-	static Near near;
+	static RealPoint realPoint;
+	static NearPoint nearPoint;
 
 	if (isOnMove)
 	{
-		real.setX(getRelativeX());
-		real.setY(getRelativeY());
+		realPoint.setX(getRelativeX());
+		realPoint.setY(getRelativeY());
 
-		near.setX(qRound(real.x()));
-		near.setY(qRound(real.y()));
+		nearPoint.setX(qRound(realPoint.x()));
+		nearPoint.setY(qRound(realPoint.y()));
 
 		switch (direct)
 		{
-			case UP: moveUp(real, near); break;
-			case DOWN: moveDown(real, near); break;
-			case LEFT: moveLeft(real, near); break;
-			case RIGHT: moveRight(real, near); break;
+			case UP: moveUp(realPoint, nearPoint); break;
+			case DOWN: moveDown(realPoint, nearPoint); break;
+			case LEFT: moveLeft(realPoint, nearPoint); break;
+			case RIGHT: moveRight(realPoint, nearPoint); break;
 		}
 	}
 }
 
-bool Player::isHaveWall(Near& near, Direct direct)
+bool Player::isHaveWall(NearPoint& nearPoint, Direct direct)
 {
-	return pMap->isHaveWall(near.x(), near.y(), direct);
+	return pMap->isHaveWall(nearPoint.x(), nearPoint.y(), direct);
 }
 
-void Player::horizonDiffHandle(Real& real, Near& near, Direct direct)
+void Player::horizonDiffHandle(RealPoint& realPoint, NearPoint& nearPoint, Direct direct)
 {
-	if (isHaveWall(near, direct))
+	if (isHaveWall(nearPoint, direct))
 	{
 		return;
 	}
-	else if (near.x() > real.x()) { moveRight(real, near); }
-	else if (near.x() < real.x()) { moveLeft(real, near); }
+	else if (nearPoint.x() > realPoint.x()) { moveRight(realPoint, nearPoint); }
+	else if (nearPoint.x() < realPoint.x()) { moveLeft(realPoint, nearPoint); }
 }
 
-void Player::verticalDiffHandle(Real& real, Near& near, Direct direct)
+void Player::verticalDiffHandle(RealPoint& realPoint, NearPoint& nearPoint, Direct direct)
 {
-	if (isHaveWall(near, direct))
+	if (isHaveWall(nearPoint, direct))
 	{
 		return;
 	}
-	else if (near.y() > real.y()) { moveDown(real, near); }
-	else if (near.y() < real.y()) { moveUp(real, near); }
+	else if (nearPoint.y() > realPoint.y()) { moveDown(realPoint, nearPoint); }
+	else if (nearPoint.y() < realPoint.y()) { moveUp(realPoint, nearPoint); }
 }
 
-void Player::moveUp(Real& real, Near& near)
+void Player::moveUp(RealPoint& realPoint, NearPoint& nearPoint)
 {
-	if (real.x() != near.x())
+	if (realPoint.x() != nearPoint.x())
 	{
-		horizonDiffHandle(real, near, UP);
+		horizonDiffHandle(realPoint, nearPoint, UP);
 		return;
 	}
-	else if (real.x() == near.x() && real.y() == near.y() && isHaveWall(near, UP))
+	else if (realPoint.x() == nearPoint.x() && realPoint.y() == nearPoint.y() && isHaveWall(nearPoint, UP))
 	{
 		return;
 	}
 	setY(this->y() - SPEED);
 }
 
-void Player::moveDown(Real& real, Near& near)
+void Player::moveDown(RealPoint& realPoint, NearPoint& nearPoint)
 {
-	if (real.x() != near.x())
+	if (realPoint.x() != nearPoint.x())
 	{
-		horizonDiffHandle(real, near, DOWN);
+		horizonDiffHandle(realPoint, nearPoint, DOWN);
 		return;
 	}
-	else if (real.x() == near.x() && real.y() == near.y() && isHaveWall(near, DOWN))
+	else if (realPoint.x() == nearPoint.x() && realPoint.y() == nearPoint.y() && isHaveWall(nearPoint, DOWN))
 	{
 		return;
 	}
 	setY(this->y() + SPEED);
 }
 
-void Player::moveLeft(Real& real, Near& near)
+void Player::moveLeft(RealPoint& realPoint, NearPoint& nearPoint)
 {
-	if (real.y() != near.y())
+	if (realPoint.y() != nearPoint.y())
 	{
-		verticalDiffHandle(real, near, LEFT);
+		verticalDiffHandle(realPoint, nearPoint, LEFT);
 		return;
 	}
-	else if (real.x() == near.x() && real.y() == near.y() && isHaveWall(near, LEFT))
+	else if (realPoint.x() == nearPoint.x() && realPoint.y() == nearPoint.y() && isHaveWall(nearPoint, LEFT))
 	{
 		return;
 	}
 	setX(this->x() - SPEED);
 }
 
-void Player::moveRight(Real& real, Near& near)
+void Player::moveRight(RealPoint& realPoint, NearPoint& nearPoint)
 {
-	if (real.y() != near.y())
+	if (realPoint.y() != nearPoint.y())
 	{
-		verticalDiffHandle(real, near, RIGHT);
+		verticalDiffHandle(realPoint, nearPoint, RIGHT);
 		return;
 	}
-	else if (real.x() == near.x() && real.y() == near.y() && isHaveWall(near, RIGHT))
+	else if (realPoint.x() == nearPoint.x() && realPoint.y() == nearPoint.y() && isHaveWall(nearPoint, RIGHT))
 	{
 		return;
 	}
@@ -134,4 +134,3 @@ double Player::getRelativeY()
 {
 	return (double)(this->y() - initY) / Map::UNIT_SIZE;
 }
-

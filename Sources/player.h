@@ -3,8 +3,8 @@
 
 #include "map.h"
 
-typedef QPointF Real;
-typedef QPoint Near;
+typedef QPointF RealPoint;
+typedef QPoint NearPoint;
 
 class Player : public QPoint
 {
@@ -21,15 +21,15 @@ class Player : public QPoint
 		int initY;
 
 	private:
-		bool isHaveWall(Near&, Direct);
-		void horizonDiffHandle(Real&, Near&, Direct);
-		void verticalDiffHandle(Real&, Near&, Direct);
+		bool isHaveWall(NearPoint&, Direct);
+		void horizonDiffHandle(RealPoint&, NearPoint&, Direct);
+		void verticalDiffHandle(RealPoint&, NearPoint&, Direct);
 
 	private:
-		void moveUp(Real&, Near&);
-		void moveDown(Real&, Near&);
-		void moveLeft(Real&, Near&);
-		void moveRight(Real&, Near&);
+		void moveUp(RealPoint&, NearPoint&);
+		void moveDown(RealPoint&, NearPoint&);
+		void moveLeft(RealPoint&, NearPoint&);
+		void moveRight(RealPoint&, NearPoint&);
 
 	public:
 		void setDirect(Direct);

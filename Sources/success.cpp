@@ -4,13 +4,23 @@
 SuccessDialog::SuccessDialog(QWidget *parent): QDialog(parent), ui(new Ui::SuccessDialog)
 {
 	ui->setupUi(this);
-	setWindowFlag(Qt::WindowContextHelpButtonHint, false);
-	connect(ui->restartButton, &QPushButton::clicked, this, &SuccessDialog::closeDialog);
+	setDialogFlags();
+	connectSignals();
 }
 
 SuccessDialog::~SuccessDialog()
 {
 	delete ui;
+}
+
+void SuccessDialog::setDialogFlags()
+{
+	setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+}
+
+void SuccessDialog::connectSignals()
+{
+	connect(ui->restartButton, &QPushButton::clicked, this, &SuccessDialog::closeDialog);
 }
 
 void SuccessDialog::openDialog(int timeDuring, bool isHaveTracked)

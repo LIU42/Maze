@@ -16,7 +16,6 @@ MainGame::~MainGame()
 void MainGame::init()
 {
 	srand((unsigned)time(NULL));
-
 	setDarkMode();
 	setInterval();
 	loadImage();
