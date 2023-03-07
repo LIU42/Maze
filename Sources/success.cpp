@@ -33,13 +33,13 @@ void SuccessDialog::openDialog(int timeDuring, bool isHaveTracked)
 	}
 	ui->timeLabel->setText(timeInfo);
 	isNeedRestart = false;
-	this->exec();
+	QDialog::exec();
 }
 
 void SuccessDialog::closeDialog()
 {
 	isNeedRestart = true;
-	this->close();
+	QDialog::close();
 }
 
 bool SuccessDialog::getIsNeedRestart()

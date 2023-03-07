@@ -25,16 +25,16 @@ QT_END_NAMESPACE
 
 enum Status { PLAYING, OVER };
 
-struct Image
+struct Images
 {
 	QPixmap background;
 	QPixmap way;
 	QPixmap finish;
 	QPixmap player;
-	QPixmap wall[4];
+	QPixmap wall[DIRECT_COUNT];
 };
 
-struct Timer
+struct Timers
 {
 	QTimer interval;
 	QTimer clock;
@@ -61,11 +61,11 @@ class MainGame : public QMainWindow
 
     private:
         Ui::MainGame* ui;
-		SuccessDialog* success;
+		SuccessDialog* pSuccess;
 
 	private:
-		Image image;
-		Timer timer;
+		Images images;
+		Timers timers;
 
 	private:
 		Map map;
@@ -74,7 +74,7 @@ class MainGame : public QMainWindow
 	private:
 		Status status;
 		WayData wayData;
-		bool isKeyPress[4];
+		bool isKeyPress[DIRECT_COUNT];
 		bool isHaveTracked;
 		int timeDuring;
 		int wayDataIndex;
@@ -109,7 +109,7 @@ class MainGame : public QMainWindow
 		void paintEvent(QPaintEvent*);
 
     public:
-        MainGame(QWidget* parent = nullptr);
+		MainGame(QWidget* parent = nullptr);
         ~MainGame();
 
 	public:

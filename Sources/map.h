@@ -12,11 +12,11 @@ typedef QQueue <Unit> UnitQueue;
 typedef QVector <Unit> NearList;
 typedef QVector <Unit> WayData;
 
-enum Direct { UP, DOWN, LEFT, RIGHT };
+enum Direct { UP, DOWN, LEFT, RIGHT, DIRECT_COUNT };
 
 struct MazeUnit
 {
-	bool isWall[4];
+	bool isWall[DIRECT_COUNT];
 	bool isVisit;
 	int stepCount;
 	Unit lastUnit;

@@ -4,13 +4,13 @@
 MainGame::MainGame(QWidget* parent): QMainWindow(parent), ui(new Ui::MainGame)
 {
     ui->setupUi(this);
-	success = new SuccessDialog(this);
+	pSuccess = new SuccessDialog(this);
 }
 
 MainGame::~MainGame()
 {
     delete ui;
-	delete success;
+	delete pSuccess;
 }
 
 void MainGame::init()
@@ -28,19 +28,19 @@ void MainGame::init()
 void MainGame::setDarkMode()
 {
 	DwmSetWindowAttribute((HWND)this->winId(), DARK_MODE_CODE, &IS_DARK_MODE, sizeof(IS_DARK_MODE));
-	DwmSetWindowAttribute((HWND)success->winId(), DARK_MODE_CODE, &IS_DARK_MODE, sizeof(IS_DARK_MODE));
+	DwmSetWindowAttribute((HWND)pSuccess->winId(), DARK_MODE_CODE, &IS_DARK_MODE, sizeof(IS_DARK_MODE));
 }
 
 void MainGame::loadImage()
 {
-	image.background.load(":/Images/background.png");
-	image.way.load(":/Images/way.png");
-	image.finish.load(":/Images/finish.png");
-	image.player.load(":/Images/player.png");
+	images.background.load(":/Images/background.png");
+	images.way.load(":/Images/way.png");
+	images.finish.load(":/Images/finish.png");
+	images.player.load(":/Images/player.png");
 
 	for (int direct = UP; direct <= RIGHT; direct++)
 	{
-		image.wall[direct].load(QString(":/Images/wall_%1.png").arg(direct));
+		images.wall[direct].load(QString(":/Images/wall_%1.png").arg(direct));
 	}
 }
 
@@ -51,7 +51,7 @@ void MainGame::mainInterval()
 		playerMove();
 		gameover();
 	}
-	update();
+	QWidget::update();
 }
 
 void MainGame::clockCallBack()
@@ -61,14 +61,14 @@ void MainGame::clockCallBack()
 
 void MainGame::setInterval()
 {
-	timer.interval.setInterval(1000 / GAME_FPS);
-	timer.clock.setInterval(CLOCK_INTERVAL);
+	timers.interval.setInterval(1000 / GAME_FPS);
+	timers.clock.setInterval(CLOCK_INTERVAL);
 }
 
 void MainGame::connectTimer()
 {
-	connect(&timer.interval, &QTimer::timeout, this, &MainGame::mainInterval);
-	connect(&timer.clock, &QTimer::timeout, this, &MainGame::clockCallBack);
+	connect(&timers.interval, &QTimer::timeout, this, &MainGame::mainInterval);
+	connect(&timers.clock, &QTimer::timeout, this, &MainGame::clockCallBack);
 }
 
 void MainGame::connectButton()
@@ -79,8 +79,8 @@ void MainGame::connectButton()
 
 void MainGame::startTimer()
 {
-	timer.interval.start();
-	timer.clock.start();
+	timers.interval.start();
+	timers.clock.start();
 }
 
 void MainGame::resetKeyStatus()
@@ -139,9 +139,9 @@ void MainGame::gameover()
 	if (playerX == Map::ROWS - 1 && playerY == Map::COLS - 1)
 	{
 		status = OVER;
-		success->openDialog(timeDuring, isHaveTracked);
+		pSuccess->openDialog(timeDuring, isHaveTracked);
 
-		if (success->getIsNeedRestart())
+		if (pSuccess->getIsNeedRestart())
 		{
 			restart();
 		}
@@ -172,12 +172,12 @@ void MainGame::keyReleaseEvent(QKeyEvent* event)
 
 void MainGame::displayBackground(QPainter& painter)
 {
-	painter.drawPixmap(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, image.background);
+	painter.drawPixmap(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, images.background);
 }
 
 void MainGame::displayMap(QPainter& painter)
 {
-	static QRect rect;
+	static QRect wallRect;
 
 	for (int x = 0; x < Map::ROWS; x++)
 	{
@@ -187,12 +187,12 @@ void MainGame::displayMap(QPainter& painter)
 			{
 				if (map.isHaveWall(x, y, (Direct)direct))
 				{
-					rect.setX(Map::UNIT_SIZE * x + BORDER - WALL_WIDTH);
-					rect.setY(Map::UNIT_SIZE * y + BORDER + MENU_HEIGHT - WALL_WIDTH);
-					rect.setWidth(Map::UNIT_SIZE + WALL_WIDTH * 2);
-					rect.setHeight(Map::UNIT_SIZE + WALL_WIDTH * 2);
+					wallRect.setX(Map::UNIT_SIZE * x + BORDER - WALL_WIDTH);
+					wallRect.setY(Map::UNIT_SIZE * y + BORDER + MENU_HEIGHT - WALL_WIDTH);
+					wallRect.setWidth(Map::UNIT_SIZE + WALL_WIDTH * 2);
+					wallRect.setHeight(Map::UNIT_SIZE + WALL_WIDTH * 2);
 
-					painter.drawPixmap(rect, image.wall[direct]);
+					painter.drawPixmap(wallRect, images.wall[direct]);
 				}
 			}
 		}
@@ -200,7 +200,7 @@ void MainGame::displayMap(QPainter& painter)
 	int x = Map::UNIT_SIZE * (Map::ROWS - 1) + BORDER;
 	int y = Map::UNIT_SIZE * (Map::COLS - 1) + BORDER + MENU_HEIGHT;
 
-	painter.drawPixmap(x, y, Map::UNIT_SIZE, Map::UNIT_SIZE, image.finish);
+	painter.drawPixmap(x, y, Map::UNIT_SIZE, Map::UNIT_SIZE, images.finish);
 }
 
 void MainGame::displayWay(QPainter& painter)
@@ -212,7 +212,7 @@ void MainGame::displayWay(QPainter& painter)
 			int x = wayData[i].x() * Map::UNIT_SIZE + BORDER;
 			int y = wayData[i].y() * Map::UNIT_SIZE + BORDER + MENU_HEIGHT;
 
-			painter.drawPixmap(x, y, Map::UNIT_SIZE, Map::UNIT_SIZE, image.way);
+			painter.drawPixmap(x, y, Map::UNIT_SIZE, Map::UNIT_SIZE, images.way);
 		}
 		if (wayDataIndex > 0) { wayDataIndex -= 1; }
 	}
@@ -220,7 +220,7 @@ void MainGame::displayWay(QPainter& painter)
 
 void MainGame::displayPlayer(QPainter& painter)
 {
-	painter.drawPixmap(player.x(), player.y(), Map::UNIT_SIZE, Map::UNIT_SIZE, image.player);
+	painter.drawPixmap(player.x(), player.y(), Map::UNIT_SIZE, Map::UNIT_SIZE, images.player);
 }
 
 void MainGame::displayInfo()
