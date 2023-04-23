@@ -1,16 +1,16 @@
-﻿#include "maze.h"
-#include "ui_maze.h"
+﻿#include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 MainGame::MainGame(QWidget* parent): QMainWindow(parent), ui(new Ui::MainGame)
 {
     ui->setupUi(this);
-	pSuccess = new SuccessDialog(this);
+    pSuccessDialog = new SuccessDialog(this);
 }
 
 MainGame::~MainGame()
 {
     delete ui;
-	delete pSuccess;
+    delete pSuccessDialog;
 }
 
 void MainGame::init()
@@ -27,13 +27,12 @@ void MainGame::init()
 
 void MainGame::setDarkMode()
 {
-	DwmSetWindowAttribute((HWND)this->winId(), DARK_MODE_CODE, &IS_DARK_MODE, sizeof(IS_DARK_MODE));
-	DwmSetWindowAttribute((HWND)pSuccess->winId(), DARK_MODE_CODE, &IS_DARK_MODE, sizeof(IS_DARK_MODE));
+    DwmSetWindowAttribute((HWND)this->winId(), DARK_MODE_CODE, &IS_DARK_MODE, sizeof(IS_DARK_MODE));
+    DwmSetWindowAttribute((HWND)pSuccessDialog->winId(), DARK_MODE_CODE, &IS_DARK_MODE, sizeof(IS_DARK_MODE));
 }
 
 void MainGame::loadImage()
 {
-	images.background.load(":/Images/background.png");
 	images.way.load(":/Images/way.png");
 	images.finish.load(":/Images/finish.png");
 	images.player.load(":/Images/player.png");
@@ -50,25 +49,28 @@ void MainGame::mainInterval()
 	{
 		playerMove();
 		gameover();
-	}
-	QWidget::update();
+    }
+    QWidget::update();
 }
 
 void MainGame::clockCallBack()
 {
-	if (status == PLAYING) { timeDuring += 1; }
+    if (status == PLAYING)
+    {
+        elapseTime += 1;
+    }
 }
 
 void MainGame::setInterval()
 {
-	timers.interval.setInterval(1000 / GAME_FPS);
-	timers.clock.setInterval(CLOCK_INTERVAL);
+    timers.interval.setInterval(1000 / GAME_FPS);
+    timers.clock.setInterval(CLOCK_INTERVAL);
 }
 
 void MainGame::connectTimer()
 {
-	connect(&timers.interval, &QTimer::timeout, this, &MainGame::mainInterval);
-	connect(&timers.clock, &QTimer::timeout, this, &MainGame::clockCallBack);
+    connect(&timers.interval, &QTimer::timeout, this, &MainGame::mainInterval);
+    connect(&timers.clock, &QTimer::timeout, this, &MainGame::clockCallBack);
 }
 
 void MainGame::connectButton()
@@ -79,7 +81,7 @@ void MainGame::connectButton()
 
 void MainGame::startTimer()
 {
-	timers.interval.start();
+    timers.interval.start();
 	timers.clock.start();
 }
 
@@ -95,11 +97,11 @@ void MainGame::restart()
 {
 	map.init();
 	map.generate();
-	player.init(BORDER, BORDER + MENU_HEIGHT, &map);
+    player.init(BORDER, BORDER, &map);
 	wayData.clear();
 	resetKeyStatus();
-	status = PLAYING;
-	timeDuring = 0;
+    status = PLAYING;
+    elapseTime = 0;
 	isHaveTracked = false;
 }
 
@@ -138,19 +140,19 @@ void MainGame::gameover()
 
 	if (playerX == Map::ROWS - 1 && playerY == Map::COLS - 1)
 	{
-		status = OVER;
-		pSuccess->openDialog(timeDuring, isHaveTracked);
+        status = OVER;
+        pSuccessDialog->openDialog(elapseTime, isHaveTracked);
 
-		if (pSuccess->getIsNeedRestart())
+        if (pSuccessDialog->getIsNeedRestart())
 		{
 			restart();
 		}
 	}
 }
 
-void MainGame::keyPressEvent(QKeyEvent* event)
+void MainGame::keyPressEvent(QKeyEvent* pEvent)
 {
-	switch (event->key())
+    switch (pEvent->key())
 	{
 		case Qt::Key_W: isKeyPress[UP] = true; break;
 		case Qt::Key_S: isKeyPress[DOWN] = true; break;
@@ -159,9 +161,9 @@ void MainGame::keyPressEvent(QKeyEvent* event)
 	}
 }
 
-void MainGame::keyReleaseEvent(QKeyEvent* event)
+void MainGame::keyReleaseEvent(QKeyEvent* pEvent)
 {
-	switch (event->key())
+    switch (pEvent->key())
 	{
 		case Qt::Key_W: isKeyPress[UP] = false; break;
 		case Qt::Key_S: isKeyPress[DOWN] = false; break;
@@ -170,9 +172,14 @@ void MainGame::keyReleaseEvent(QKeyEvent* event)
 	}
 }
 
+void MainGame::setPainter(QPainter& painter)
+{
+    painter.setViewport(0, MENU_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+
 void MainGame::displayBackground(QPainter& painter)
 {
-	painter.drawPixmap(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, images.background);
+    painter.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, QColor(0x252525));
 }
 
 void MainGame::displayMap(QPainter& painter)
@@ -188,19 +195,19 @@ void MainGame::displayMap(QPainter& painter)
 				if (map.isHaveWall(x, y, (Direct)direct))
 				{
 					wallRect.setX(Map::UNIT_SIZE * x + BORDER - WALL_WIDTH);
-					wallRect.setY(Map::UNIT_SIZE * y + BORDER + MENU_HEIGHT - WALL_WIDTH);
+                    wallRect.setY(Map::UNIT_SIZE * y + BORDER - WALL_WIDTH);
 					wallRect.setWidth(Map::UNIT_SIZE + WALL_WIDTH * 2);
 					wallRect.setHeight(Map::UNIT_SIZE + WALL_WIDTH * 2);
 
-					painter.drawPixmap(wallRect, images.wall[direct]);
+                    painter.drawPixmap(wallRect, images.wall[direct]);
 				}
 			}
 		}
 	}
 	int x = Map::UNIT_SIZE * (Map::ROWS - 1) + BORDER;
-	int y = Map::UNIT_SIZE * (Map::COLS - 1) + BORDER + MENU_HEIGHT;
+    int y = Map::UNIT_SIZE * (Map::COLS - 1) + BORDER;
 
-	painter.drawPixmap(x, y, Map::UNIT_SIZE, Map::UNIT_SIZE, images.finish);
+    painter.drawPixmap(x, y, Map::UNIT_SIZE, Map::UNIT_SIZE, images.finish);
 }
 
 void MainGame::displayWay(QPainter& painter)
@@ -210,9 +217,9 @@ void MainGame::displayWay(QPainter& painter)
 		for (int i = wayData.length() - 1; i >= wayDataIndex; i--)
 		{
 			int x = wayData[i].x() * Map::UNIT_SIZE + BORDER;
-			int y = wayData[i].y() * Map::UNIT_SIZE + BORDER + MENU_HEIGHT;
+            int y = wayData[i].y() * Map::UNIT_SIZE + BORDER;
 
-			painter.drawPixmap(x, y, Map::UNIT_SIZE, Map::UNIT_SIZE, images.way);
+            painter.drawPixmap(x, y, Map::UNIT_SIZE, Map::UNIT_SIZE, images.way);
 		}
 		if (wayDataIndex > 0) { wayDataIndex -= 1; }
 	}
@@ -220,20 +227,21 @@ void MainGame::displayWay(QPainter& painter)
 
 void MainGame::displayPlayer(QPainter& painter)
 {
-	painter.drawPixmap(player.x(), player.y(), Map::UNIT_SIZE, Map::UNIT_SIZE, images.player);
+    painter.drawPixmap(player.x(), player.y(), Map::UNIT_SIZE, Map::UNIT_SIZE, images.player);
 }
 
 void MainGame::displayInfo()
 {
-	ui->timeLabel->setText(QString("TIME: %1").arg(timeDuring));
+    ui->timeLabel->setText(QString("TIME: %1").arg(elapseTime));
 }
 
 void MainGame::paintEvent(QPaintEvent*)
 {
-	QPainter painter(this);
-	displayBackground(painter);
-	displayWay(painter);
-	displayMap(painter);
-	displayPlayer(painter);
+    QPainter painter(this);
+    setPainter(painter);
+    displayBackground(painter);
+    displayWay(painter);
+    displayMap(painter);
+    displayPlayer(painter);
 	displayInfo();
 }

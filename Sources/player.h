@@ -9,7 +9,7 @@ typedef QPoint NearPoint;
 class Player : public QPoint
 {
 	private:
-		static const int SPEED = 3;
+        static const int SPEED = 5;
 
 	private:
 		Direct direct;

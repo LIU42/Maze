@@ -7,10 +7,10 @@
 #include <QQueue>
 
 typedef QPoint Unit;
-typedef QStack <Unit> UnitStack;
-typedef QQueue <Unit> UnitQueue;
-typedef QVector <Unit> NearList;
-typedef QVector <Unit> WayData;
+typedef QStack<Unit> UnitStack;
+typedef QQueue<Unit> UnitQueue;
+typedef QVector<Unit> NearList;
+typedef QVector<Unit> WayData;
 
 enum Direct { UP, DOWN, LEFT, RIGHT, DIRECT_COUNT };
 
@@ -18,7 +18,7 @@ struct MazeUnit
 {
 	bool isWall[DIRECT_COUNT];
 	bool isVisit;
-	int stepCount;
+    int stepCount;
 	Unit lastUnit;
 };
 
@@ -35,7 +35,7 @@ class Map
 	private:
 		NearList getNearList(Unit&);
 		Unit getLastUnit(Unit&);
-		int getStepCount(Unit&);
+        int getStepCount(Unit&);
 
 	private:
 		void setVisit(Unit&, int&);

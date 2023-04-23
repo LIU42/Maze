@@ -1,5 +1,5 @@
-﻿#ifndef __MAZE_H__
-#define __MAZE_H__
+﻿#ifndef __MAINWINDOW_H__
+#define __MAINWINDOW_H__
 
 #include <QApplication>
 #include <QMainWindow>
@@ -27,7 +27,6 @@ enum Status { PLAYING, OVER };
 
 struct Images
 {
-	QPixmap background;
 	QPixmap way;
 	QPixmap finish;
 	QPixmap player;
@@ -36,7 +35,7 @@ struct Images
 
 struct Timers
 {
-	QTimer interval;
+    QTimer interval;
 	QTimer clock;
 };
 
@@ -55,13 +54,13 @@ class MainGame : public QMainWindow
 		static const int DARK_MODE_CODE = 20;
 
 	private:
-		static const int MENU_HEIGHT = 60;
+        static const int MENU_HEIGHT = 60;
 		static const int BORDER = 20;
 		static const int WALL_WIDTH = 3;
 
     private:
         Ui::MainGame* ui;
-		SuccessDialog* pSuccess;
+        SuccessDialog* pSuccessDialog;
 
 	private:
 		Images images;
@@ -75,8 +74,8 @@ class MainGame : public QMainWindow
 		Status status;
 		WayData wayData;
 		bool isKeyPress[DIRECT_COUNT];
-		bool isHaveTracked;
-		int timeDuring;
+        bool isHaveTracked;
+        int elapseTime;
 		int wayDataIndex;
 
 	private:
@@ -88,19 +87,20 @@ class MainGame : public QMainWindow
 		void startTimer();
 		void resetKeyStatus();
 
-	private:
-		void mainInterval();
+    private:
+        void mainInterval();
 		void clockCallBack();
 		void restart();
 		void getWayData();
 		void playerMove();
 		void gameover();
 
-	private:
-		void displayBackground(QPainter&);
-		void displayMap(QPainter&);
-		void displayWay(QPainter&);
-		void displayPlayer(QPainter&);
+    public:
+        void setPainter(QPainter&);
+        void displayBackground(QPainter&);
+        void displayMap(QPainter&);
+        void displayWay(QPainter&);
+        void displayPlayer(QPainter&);
 		void displayInfo();
 
 	private:

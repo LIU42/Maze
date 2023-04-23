@@ -12,19 +12,19 @@ LIBS += Dwmapi.lib
 
 SOURCES += \
     Sources/main.cpp \
+    Sources/mainwindow.cpp \
     Sources/map.cpp \
-    Sources/maze.cpp \
     Sources/player.cpp \
     Sources/success.cpp
 
 HEADERS += \
+    Sources/mainwindow.h \
     Sources/map.h \
-    Sources/maze.h \
     Sources/player.h \
     Sources/success.h
 
 FORMS += \
-    Forms/maze.ui \
+	Forms/mainwindow.ui \
 	Forms/success.ui
 
 # Default rules for deployment.

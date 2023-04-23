@@ -116,12 +116,12 @@ void Map::removeWall(Unit& nowUnit, Unit& nearUnit)
 
 void Map::setLastUnit(Unit& nowUnit, Unit& nearUnit)
 {
-	int nowX = nowUnit.x();
-	int nowY = nowUnit.y();
+    int nowX = nowUnit.x();
+    int nowY = nowUnit.y();
 	int nearX = nearUnit.x();
 	int nearY = nearUnit.y();
 
-	units[nearX][nearY].stepCount = units[nowX][nowY].stepCount + 1;
+    units[nearX][nearY].stepCount = units[nowX][nowY].stepCount + 1;
 	units[nearX][nearY].lastUnit = nowUnit;
 }
 
@@ -184,7 +184,7 @@ WayData Map::getWayData(int initX, int initY)
 		for (int y = 0; y < COLS; y++)
 		{
 			units[x][y].isVisit = false;
-			units[x][y].stepCount = 0;
+            units[x][y].stepCount = 0;
 		}
 	}
 	nowUnit.setX(initX);

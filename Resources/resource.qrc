@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>../Images/icon.ico</file>
-        <file>../Images/background.png</file>
         <file>../Images/wall_0.png</file>
         <file>../Images/wall_1.png</file>
         <file>../Images/wall_2.png</file>
