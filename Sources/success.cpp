@@ -4,8 +4,8 @@
 SuccessDialog::SuccessDialog(QWidget *parent): QDialog(parent), ui(new Ui::SuccessDialog)
 {
 	ui->setupUi(this);
-	setDialogFlags();
-	connectSignals();
+    setDialogFlags();
+    connectButtons();
 }
 
 SuccessDialog::~SuccessDialog()
@@ -18,20 +18,24 @@ void SuccessDialog::setDialogFlags()
 	setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 }
 
-void SuccessDialog::connectSignals()
+void SuccessDialog::connectButtons()
 {
-	connect(ui->restartButton, &QPushButton::clicked, this, &SuccessDialog::closeDialog);
+    connect(ui->pRestartButton, &QPushButton::clicked, this, &SuccessDialog::closeDialog);
 }
 
-void SuccessDialog::openDialog(int timeDuring, bool isHaveTracked)
+void SuccessDialog::setDialogInfo(int elapseTime, bool isHaveTracked)
 {
-	QString timeInfo = QString("TIME: %1s").arg(timeDuring);
+    QString timeInfo = QString("TIME: %1s").arg(elapseTime);
 
-	if (isHaveTracked)
-	{
-		timeInfo.append(" (Tracked)");
-	}
-	ui->timeLabel->setText(timeInfo);
+    if (isHaveTracked)
+    {
+        timeInfo.append(" (Tracked)");
+    }
+    ui->pTimeLabel->setText(timeInfo);
+}
+
+void SuccessDialog::showDialog()
+{
 	isNeedRestart = false;
 	QDialog::exec();
 }

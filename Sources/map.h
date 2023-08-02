@@ -1,57 +1,65 @@
 ﻿#ifndef __MAP_H__
 #define __MAP_H__
 
+#include <QVector>
 #include <QPoint>
 #include <QStack>
-#include <QVector>
 #include <QQueue>
 
-typedef QPoint Unit;
-typedef QStack<Unit> UnitStack;
-typedef QQueue<Unit> UnitQueue;
-typedef QVector<Unit> NearList;
-typedef QVector<Unit> WayData;
+using MazeBlockPoint = QPoint;
+using MazeBlockStack = QStack<QPoint>;
+using MazeBlockQueue = QQueue<QPoint>;
+using MazeNearbyList = QVector<QPoint>;
+using MazeWayData = QVector<QPoint>;
 
-enum Direct { UP, DOWN, LEFT, RIGHT, DIRECT_COUNT };
+enum Direct { UP, DOWN, LEFT, RIGHT };
 
-struct MazeUnit
+class MazeBlockUnit
 {
-	bool isWall[DIRECT_COUNT];
-	bool isVisit;
-    int stepCount;
-	Unit lastUnit;
+    friend class Map;
+
+    public:
+        static const int SIZE = 30;
+        static const int DIRECT_COUNT = 4;
+
+    private:
+        MazeBlockPoint preBlock;
+
+    private:
+        bool isWall[DIRECT_COUNT];
+        bool isVisited;
+        int stepCount;
 };
 
 class Map
 {
 	public:
 		static const int ROWS = 30;
-		static const int COLS = 20;
-		static const int UNIT_SIZE = 30;
+        static const int COLS = 20;
+
+    private:
+        MazeBlockUnit unitMatrix[ROWS][COLS];
 
 	private:
-		MazeUnit units[ROWS][COLS];
+        MazeNearbyList getNearbyList(MazeBlockPoint&);
+        MazeBlockPoint getPreBlock(MazeBlockPoint&);
+        int getStepCount(MazeBlockPoint&);
 
 	private:
-		NearList getNearList(Unit&);
-		Unit getLastUnit(Unit&);
-        int getStepCount(Unit&);
-
-	private:
-		void setVisit(Unit&, int&);
-		void removeWall(Unit&, Unit&);
-		void setLastUnit(Unit&, Unit&);
+        void setVisited(MazeBlockPoint&, int&);
+        void removeWall(MazeBlockPoint&, MazeBlockPoint&);
+        void setPreBlock(MazeBlockPoint&, MazeBlockPoint&);
 
 	private:
 		bool isInRange(int, int);
-		bool isHaveWall(Unit&, Unit&);
+        bool isHaveWall(MazeBlockPoint&, MazeBlockPoint&);
 
 	public:
-		void init();
-		void generate();
+        void initUnitMatrix();
+        void generateMaze();
 
 	public:
 		bool isHaveWall(int, int, Direct);
-		WayData getWayData(int, int);
+        MazeWayData getWayData(int, int);
 };
 #endif

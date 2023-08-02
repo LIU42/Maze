@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainGame</class>
- <widget class="QMainWindow" name="MainGame">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -32,11 +32,11 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
-  <widget class="QWidget" name="mainWidget">
+  <widget class="QWidget" name="pMainWidget">
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">background-color: rgb(37, 37, 37);</string>
    </property>
-   <widget class="QFrame" name="menuFrame">
+   <widget class="QFrame" name="pMenuFrame">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -60,7 +60,7 @@
     <property name="lineWidth">
      <number>0</number>
     </property>
-    <widget class="QLabel" name="timeLabel">
+    <widget class="QLabel" name="pTimeLabel">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -85,7 +85,7 @@
       <string>TIME: 0</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="restartButton">
+    <widget class="QPushButton" name="pRestartButton">
      <property name="geometry">
       <rect>
        <x>860</x>
@@ -109,7 +109,7 @@ QPushButton:hover
       <string/>
      </property>
     </widget>
-    <widget class="QPushButton" name="findButton">
+    <widget class="QPushButton" name="pFindButton">
      <property name="geometry">
       <rect>
        <x>800</x>
@@ -134,8 +134,38 @@ QPushButton:hover
      </property>
     </widget>
    </widget>
+   <widget class="GraphicsWidget" name="pGraphics" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>60</y>
+      <width>940</width>
+      <height>640</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>940</width>
+      <height>640</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>940</width>
+      <height>640</height>
+     </size>
+    </property>
+   </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GraphicsWidget</class>
+   <extends>QWidget</extends>
+   <header>graphics.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../Resources/resource.qrc"/>
  </resources>

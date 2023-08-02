@@ -1,16 +1,16 @@
 ﻿#include "map.h"
 
-void Map::init()
+void Map::initUnitMatrix()
 {
 	for (int x = 0; x < ROWS; x++)
 	{
 		for (int y = 0; y < COLS; y++)
 		{
 			for (int direct = UP; direct <= RIGHT; direct++)
-			{
-				units[x][y].isWall[direct] = true;
-			}
-			units[x][y].isVisit = false;
+            {
+                unitMatrix[x][y].isWall[direct] = true;
+            }
+            unitMatrix[x][y].isVisited = false;
 		}
 	}
 }
@@ -24,199 +24,199 @@ bool Map::isInRange(int x, int y)
 	return false;
 }
 
-NearList Map::getNearList(Unit& nowUnit)
+MazeNearbyList Map::getNearbyList(MazeBlockPoint& currentBlock)
 {
-	NearList nearList;
+    MazeNearbyList nearbyList;
 
-	int nowX = nowUnit.x();
-	int nowY = nowUnit.y();
+    int currentX = currentBlock.x();
+    int currentY = currentBlock.y();
 
-	if (isInRange(nowX + 1, nowY) && !units[nowX + 1][nowY].isVisit)
+    if (isInRange(currentX + 1, currentY) && !unitMatrix[currentX + 1][currentY].isVisited)
 	{
-		nearList.append(Unit(nowX + 1, nowY));
-	}
-	if (isInRange(nowX - 1, nowY) && !units[nowX - 1][nowY].isVisit)
+        nearbyList.append(MazeBlockPoint(currentX + 1, currentY));
+    }
+    if (isInRange(currentX - 1, currentY) && !unitMatrix[currentX - 1][currentY].isVisited)
 	{
-		nearList.append(Unit(nowX - 1, nowY));
-	}
-	if (isInRange(nowX, nowY + 1) && !units[nowX][nowY + 1].isVisit)
+        nearbyList.append(MazeBlockPoint(currentX - 1, currentY));
+    }
+    if (isInRange(currentX, currentY + 1) && !unitMatrix[currentX][currentY + 1].isVisited)
 	{
-		nearList.append(Unit(nowX, nowY + 1));
-	}
-	if (isInRange(nowX, nowY - 1) && !units[nowX][nowY - 1].isVisit)
+        nearbyList.append(MazeBlockPoint(currentX, currentY + 1));
+    }
+    if (isInRange(currentX, currentY - 1) && !unitMatrix[currentX][currentY - 1].isVisited)
 	{
-		nearList.append(Unit(nowX, nowY - 1));
+        nearbyList.append(MazeBlockPoint(currentX, currentY - 1));
 	}
-	return nearList;
+    return nearbyList;
 }
 
-void Map::setVisit(Unit& unit, int& visitCount)
+void Map::setVisited(MazeBlockPoint& block, int& visitedCount)
 {
-	int x = unit.x();
-	int y = unit.y();
+    int x = block.x();
+    int y = block.y();
 
-	units[x][y].isVisit = true;
-	visitCount += 1;
+    unitMatrix[x][y].isVisited = true;
+    visitedCount += 1;
 }
 
-bool Map::isHaveWall(Unit& nowUnit, Unit& nearUnit)
+bool Map::isHaveWall(MazeBlockPoint& currentBlock, MazeBlockPoint& nearbyBlock)
 {
-	int nowX = nowUnit.x();
-	int nowY = nowUnit.y();
-	int nearX = nearUnit.x();
-	int nearY = nearUnit.y();
+    int currentX = currentBlock.x();
+    int currentY = currentBlock.y();
+    int nearbyX = nearbyBlock.x();
+    int nearbyY = nearbyBlock.y();
 
-	if (nearX == nowX && nearY < nowY)
-	{
-		return units[nowX][nowY].isWall[UP];
+    if (nearbyX == currentX && nearbyY < currentY)
+    {
+        return unitMatrix[currentX][currentY].isWall[UP];
 	}
-	else if (nearX == nowX && nearY > nowY)
-	{
-		return units[nowX][nowY].isWall[DOWN];
+    else if (nearbyX == currentX && nearbyY > currentY)
+    {
+        return unitMatrix[currentX][currentY].isWall[DOWN];
 	}
-	else if (nearX < nowX && nearY == nowY)
-	{
-		return units[nowX][nowY].isWall[LEFT];
+    else if (nearbyX < currentX && nearbyY == currentY)
+    {
+        return unitMatrix[currentX][currentY].isWall[LEFT];
 	}
-	else if (nearX > nowX && nearY == nowY)
-	{
-		return units[nowX][nowY].isWall[RIGHT];
+    else if (nearbyX > currentX && nearbyY == currentY)
+    {
+        return unitMatrix[currentX][currentY].isWall[RIGHT];
 	}
 	return true;
 }
 
-void Map::removeWall(Unit& nowUnit, Unit& nearUnit)
+void Map::removeWall(MazeBlockPoint& currentBlock, MazeBlockPoint& nearbyBlock)
 {
-	int nowX = nowUnit.x();
-	int nowY = nowUnit.y();
-	int nearX = nearUnit.x();
-	int nearY = nearUnit.y();
+    int currentX = currentBlock.x();
+    int currentY = currentBlock.y();
+    int nearbyX = nearbyBlock.x();
+    int nearbyY = nearbyBlock.y();
 
-	if (nearX == nowX && nearY < nowY)
+    if (nearbyX == currentX && nearbyY < currentY)
 	{
-		units[nowX][nowY].isWall[UP] = false;
-		units[nearX][nearY].isWall[DOWN] = false;
+        unitMatrix[currentX][currentY].isWall[UP] = false;
+        unitMatrix[nearbyX][nearbyY].isWall[DOWN] = false;
 	}
-	else if (nearX == nowX && nearY > nowY)
-	{
-		units[nowX][nowY].isWall[DOWN] = false;
-		units[nearX][nearY].isWall[UP] = false;
+    else if (nearbyX == currentX && nearbyY > currentY)
+    {
+        unitMatrix[currentX][currentY].isWall[DOWN] = false;
+        unitMatrix[nearbyX][nearbyY].isWall[UP] = false;
 	}
-	else if (nearX < nowX && nearY == nowY)
-	{
-		units[nowX][nowY].isWall[LEFT] = false;
-		units[nearX][nearY].isWall[RIGHT] = false;
+    else if (nearbyX < currentX && nearbyY == currentY)
+    {
+        unitMatrix[currentX][currentY].isWall[LEFT] = false;
+        unitMatrix[nearbyX][nearbyY].isWall[RIGHT] = false;
 	}
-	else if (nearX > nowX && nearY == nowY)
-	{
-		units[nowX][nowY].isWall[RIGHT] = false;
-		units[nearX][nearY].isWall[LEFT] = false;
+    else if (nearbyX > currentX && nearbyY == currentY)
+    {
+        unitMatrix[currentX][currentY].isWall[RIGHT] = false;
+        unitMatrix[nearbyX][nearbyY].isWall[LEFT] = false;
 	}
 }
 
-void Map::setLastUnit(Unit& nowUnit, Unit& nearUnit)
+void Map::setPreBlock(MazeBlockPoint& currentBlock, MazeBlockPoint& nearbyBlock)
 {
-    int nowX = nowUnit.x();
-    int nowY = nowUnit.y();
-	int nearX = nearUnit.x();
-	int nearY = nearUnit.y();
+    int currentX = currentBlock.x();
+    int currentY = currentBlock.y();
+    int nearbyX = nearbyBlock.x();
+    int nearbyY = nearbyBlock.y();
 
-    units[nearX][nearY].stepCount = units[nowX][nowY].stepCount + 1;
-	units[nearX][nearY].lastUnit = nowUnit;
+    unitMatrix[nearbyX][nearbyY].stepCount = unitMatrix[currentX][currentY].stepCount + 1;
+    unitMatrix[nearbyX][nearbyY].preBlock = currentBlock;
 }
 
-int Map::getStepCount(Unit& unit)
+int Map::getStepCount(MazeBlockPoint& block)
 {
-	return units[unit.x()][unit.y()].stepCount;
+    return unitMatrix[block.x()][block.y()].stepCount;
 }
 
-Unit Map::getLastUnit(Unit& unit)
+MazeBlockPoint Map::getPreBlock(MazeBlockPoint& block)
 {
-	return units[unit.x()][unit.y()].lastUnit;
+    return unitMatrix[block.x()][block.y()].preBlock;
 }
 
-void Map::generate()
+void Map::generateMaze()
 {
-	UnitStack unitStack;
-	NearList nearList;
-	Unit nowUnit;
-	Unit nearUnit;
+    MazeBlockStack blockStack;
+    MazeNearbyList nearbyList;
+    MazeBlockPoint currentBlock;
+    MazeBlockPoint nearbyBlock;
 	int visitCount = 0;
 
-	nowUnit.setX(rand() % ROWS);
-	nowUnit.setY(rand() % COLS);
-	setVisit(nowUnit, visitCount);
+    currentBlock.setX(rand() % ROWS);
+    currentBlock.setY(rand() % COLS);
+    setVisited(currentBlock, visitCount);
 
 	while (visitCount < ROWS * COLS)
 	{
-		nearList = getNearList(nowUnit);
+        nearbyList = getNearbyList(currentBlock);
 
-		if (!nearList.isEmpty())
+        if (!nearbyList.isEmpty())
 		{
-			nearUnit = nearList[rand() % nearList.length()];
-			unitStack.push(nowUnit);
-			removeWall(nowUnit, nearUnit);
-			setVisit(nearUnit, visitCount);
-			nowUnit = nearUnit;
+            nearbyBlock = nearbyList[rand() % nearbyList.length()];
+            blockStack.push(currentBlock);
+            removeWall(currentBlock, nearbyBlock);
+            setVisited(nearbyBlock, visitCount);
+            currentBlock = nearbyBlock;
 		}
-		else if (!unitStack.isEmpty())
+        else if (!blockStack.isEmpty())
 		{
-			nowUnit = unitStack.pop();
+            currentBlock = blockStack.pop();
 		}
 	}
 }
 
 bool Map::isHaveWall(int x, int y, Direct direct)
 {
-	return units[x][y].isWall[direct];
+    return unitMatrix[x][y].isWall[direct];
 }
 
-WayData Map::getWayData(int initX, int initY)
+MazeWayData Map::getWayData(int initX, int initY)
 {
-	WayData wayData;
-	UnitQueue unitQueue;
-	NearList nearList;
-	Unit nowUnit;
+    MazeBlockQueue blockQueue;
+    MazeNearbyList nearbyList;
+    MazeBlockPoint currentBlock;
+    MazeWayData wayData;
 	int visitCount = 0;
 
 	for (int x = 0; x < ROWS; x++)
 	{
 		for (int y = 0; y < COLS; y++)
-		{
-			units[x][y].isVisit = false;
-            units[x][y].stepCount = 0;
+        {
+            unitMatrix[x][y].isVisited = false;
+            unitMatrix[x][y].stepCount = 0;
 		}
 	}
-	nowUnit.setX(initX);
-	nowUnit.setY(initY);
-	setVisit(nowUnit, visitCount);
-	unitQueue.enqueue(nowUnit);
+    currentBlock.setX(initX);
+    currentBlock.setY(initY);
+    setVisited(currentBlock, visitCount);
+    blockQueue.enqueue(currentBlock);
 
-	while (!unitQueue.isEmpty())
+    while (!blockQueue.isEmpty())
 	{
-		nowUnit = unitQueue.front();
+        currentBlock = blockQueue.front();
 
-		if (nowUnit.x() == ROWS - 1 && nowUnit.y() == COLS - 1)
+        if (currentBlock.x() == ROWS - 1 && currentBlock.y() == COLS - 1)
 		{
 			break;
 		}
-		nearList = getNearList(nowUnit);
+        nearbyList = getNearbyList(currentBlock);
 
-		for (int i = 0; i < nearList.length(); i++)
+        for (int i = 0; i < nearbyList.length(); i++)
 		{
-			if (!isHaveWall(nowUnit, nearList[i]))
+            if (!isHaveWall(currentBlock, nearbyList[i]))
 			{
-				unitQueue.enqueue(nearList[i]);
-				setLastUnit(nowUnit, nearList[i]);
-				setVisit(nearList[i], visitCount);
+                blockQueue.enqueue(nearbyList[i]);
+                setPreBlock(currentBlock, nearbyList[i]);
+                setVisited(nearbyList[i], visitCount);
 			}
 		}
-		unitQueue.dequeue();
+        blockQueue.dequeue();
 	}
-	for (int stepCount = getStepCount(nowUnit); stepCount >= 0; stepCount--)
+    for (int stepCount = getStepCount(currentBlock); stepCount >= 0; stepCount--)
 	{
-		wayData.append(nowUnit);
-		nowUnit = getLastUnit(nowUnit);
+        wayData.append(currentBlock);
+        currentBlock = getPreBlock(currentBlock);
 	}
 	return wayData;
 }

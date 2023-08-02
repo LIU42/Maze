@@ -11,15 +11,19 @@ LIBS += Dwmapi.lib
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Sources/graphics.cpp \
     Sources/main.cpp \
     Sources/mainwindow.cpp \
     Sources/map.cpp \
+    Sources/maze.cpp \
     Sources/player.cpp \
     Sources/success.cpp
 
 HEADERS += \
+    Sources/graphics.h \
     Sources/mainwindow.h \
     Sources/map.h \
+    Sources/maze.h \
     Sources/player.h \
     Sources/success.h
 
@@ -35,4 +39,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     Resources/resource.qrc
 
-RC_ICONS = Images/icon.ico
+RC_ICONS = Resources/Images/icon.ico

@@ -1,19 +1,13 @@
 ﻿#include "player.h"
 
-void Player::init(int initX, int initY, Map* pMap)
+void Player::setMap(Map* pMap)
 {
-	this->initX = initX;
-	this->initY = initY;
-	this->setX(initX);
-	this->setY(initY);
-	this->pMap = pMap;
-	this->direct = UP;
-	this->isOnMove = false;
+    this->pMap = pMap;
 }
 
-void Player::setDirect(Direct direct)
+void Player::setForwardDirect(Direct direct)
 {
-	this->direct = direct;
+    this->forwardDirect = direct;
 }
 
 void Player::setIsOnMove(bool isOnMove)
@@ -21,107 +15,121 @@ void Player::setIsOnMove(bool isOnMove)
 	this->isOnMove = isOnMove;
 }
 
+void Player::reset()
+{
+    positionX = INIT_POSITION_X;
+    positionY = INIT_POSITION_Y;
+    forwardDirect = UP;
+    isOnMove = false;
+}
+
 void Player::move()
 {
-	static RealPoint realPoint;
-	static NearPoint nearPoint;
-
 	if (isOnMove)
 	{
-		realPoint.setX(getRelativeX());
-		realPoint.setY(getRelativeY());
+        relativePoint.setX(getRelativeX());
+        relativePoint.setY(getRelativeY());
 
-		nearPoint.setX(qRound(realPoint.x()));
-		nearPoint.setY(qRound(realPoint.y()));
+        blockPoint.setX(qRound(relativePoint.x()));
+        blockPoint.setY(qRound(relativePoint.y()));
 
-		switch (direct)
+        switch (forwardDirect)
 		{
-			case UP: moveUp(realPoint, nearPoint); break;
-			case DOWN: moveDown(realPoint, nearPoint); break;
-			case LEFT: moveLeft(realPoint, nearPoint); break;
-			case RIGHT: moveRight(realPoint, nearPoint); break;
-			default: break;
+            case UP: moveUp(); break;
+            case DOWN: moveDown(); break;
+            case LEFT: moveLeft(); break;
+            case RIGHT: moveRight(); break;
 		}
 	}
 }
 
-bool Player::isHaveWall(NearPoint& nearPoint, Direct direct)
+bool Player::isForwardHaveWall()
 {
-	return pMap->isHaveWall(nearPoint.x(), nearPoint.y(), direct);
+    return pMap->isHaveWall(blockPoint.x(), blockPoint.y(), forwardDirect);
 }
 
-void Player::horizonDiffHandle(RealPoint& realPoint, NearPoint& nearPoint, Direct direct)
+void Player::horizonDiffHandler()
 {
-	if (!isHaveWall(nearPoint, direct))
+    if (!isForwardHaveWall())
 	{
-		if (nearPoint.x() > realPoint.x()) { moveRight(realPoint, nearPoint); }
-		if (nearPoint.x() < realPoint.x()) { moveLeft(realPoint, nearPoint); }
-	}
-}
-
-void Player::verticalDiffHandle(RealPoint& realPoint, NearPoint& nearPoint, Direct direct)
-{
-	if (!isHaveWall(nearPoint, direct))
-	{
-		if (nearPoint.y() > realPoint.y()) { moveDown(realPoint, nearPoint); }
-		if (nearPoint.y() < realPoint.y()) { moveUp(realPoint, nearPoint); }
+        if (blockPoint.x() > relativePoint.x()) { moveRight(); }
+        if (blockPoint.x() < relativePoint.x()) { moveLeft(); }
 	}
 }
 
-void Player::moveUp(RealPoint& realPoint, NearPoint& nearPoint)
+void Player::verticalDiffHandler()
 {
-	if (realPoint.x() != nearPoint.x())
+    if (!isForwardHaveWall())
 	{
-		horizonDiffHandle(realPoint, nearPoint, UP);
-	}
-	else if (realPoint.y() != nearPoint.y() || !isHaveWall(nearPoint, UP))
-	{
-		setY(QPoint::y() - SPEED);
+        if (blockPoint.y() > relativePoint.y()) { moveDown(); }
+        if (blockPoint.y() < relativePoint.y()) { moveUp(); }
 	}
 }
 
-void Player::moveDown(RealPoint& realPoint, NearPoint& nearPoint)
+void Player::moveUp()
 {
-	if (realPoint.x() != nearPoint.x())
+    if (relativePoint.x() != blockPoint.x())
 	{
-		horizonDiffHandle(realPoint, nearPoint, DOWN);
+        horizonDiffHandler();
 	}
-	else if (realPoint.y() != nearPoint.y() || !isHaveWall(nearPoint, DOWN))
-	{
-		setY(QPoint::y() + SPEED);
+    else if (relativePoint.y() != blockPoint.y() || !isForwardHaveWall())
+    {
+        positionY -= SPEED;
 	}
 }
 
-void Player::moveLeft(RealPoint& realPoint, NearPoint& nearPoint)
+void Player::moveDown()
 {
-	if (realPoint.y() != nearPoint.y())
+    if (relativePoint.x() != blockPoint.x())
 	{
-		verticalDiffHandle(realPoint, nearPoint, LEFT);
+        horizonDiffHandler();
 	}
-	else if (realPoint.x() != nearPoint.x() || !isHaveWall(nearPoint, LEFT))
-	{
-		setX(QPoint::x() - SPEED);
+    else if (relativePoint.y() != blockPoint.y() || !isForwardHaveWall())
+    {
+        positionY += SPEED;
 	}
 }
 
-void Player::moveRight(RealPoint& realPoint, NearPoint& nearPoint)
+void Player::moveLeft()
 {
-	if (realPoint.y() != nearPoint.y())
+    if (relativePoint.y() != blockPoint.y())
 	{
-		verticalDiffHandle(realPoint, nearPoint, RIGHT);
+        verticalDiffHandler();
 	}
-	else if (realPoint.x() != nearPoint.x() || !isHaveWall(nearPoint, RIGHT))
+    else if (relativePoint.x() != blockPoint.x() || !isForwardHaveWall())
+    {
+        positionX -= SPEED;
+	}
+}
+
+void Player::moveRight()
+{
+    if (relativePoint.y() != blockPoint.y())
 	{
-		setX(QPoint::x() + SPEED);
+        verticalDiffHandler();
 	}
+    else if (relativePoint.x() != blockPoint.x() || !isForwardHaveWall())
+    {
+        positionX += SPEED;
+	}
+}
+
+int Player::getPositionX()
+{
+    return positionX;
+}
+
+int Player::getPositionY()
+{
+    return positionY;
 }
 
 double Player::getRelativeX()
 {
-	return (double)(QPoint::x() - initX) / Map::UNIT_SIZE;
+    return (double)(positionX - INIT_POSITION_X) / MazeBlockUnit::SIZE;
 }
 
 double Player::getRelativeY()
 {
-	return (double)(QPoint::y() - initY) / Map::UNIT_SIZE;
+    return (double)(positionY - INIT_POSITION_Y) / MazeBlockUnit::SIZE;
 }

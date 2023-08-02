@@ -1,156 +1,127 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainGame::MainGame(QWidget* parent): QMainWindow(parent), ui(new Ui::MainGame)
+MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     pSuccessDialog = new SuccessDialog(this);
 }
 
-MainGame::~MainGame()
+MainWindow::~MainWindow()
 {
     delete ui;
     delete pSuccessDialog;
 }
 
-void MainGame::init()
+void MainWindow::setGame(MainGame* pGame)
+{
+    this->pGame = pGame;
+    ui->pGraphics->setGame(pGame);
+}
+
+void MainWindow::init()
 {
 	srand((unsigned)time(NULL));
 	setDarkMode();
 	setInterval();
-	loadImage();
-	connectTimer();
-	connectButton();
-	startTimer();
-	restart();
+    connectTimers();
+    connectButtons();
+    startTimers();
+    restartGame();
 }
 
-void MainGame::setDarkMode()
+void MainWindow::setDarkMode()
 {
-    DwmSetWindowAttribute((HWND)this->winId(), DARK_MODE_CODE, &IS_DARK_MODE, sizeof(IS_DARK_MODE));
-    DwmSetWindowAttribute((HWND)pSuccessDialog->winId(), DARK_MODE_CODE, &IS_DARK_MODE, sizeof(IS_DARK_MODE));
+    DwmSetWindowAttribute((HWND)this->winId(), DARK_MODE_CODE, &DARK_MODE_FLAG, sizeof(DARK_MODE_FLAG));
+    DwmSetWindowAttribute((HWND)pSuccessDialog->winId(), DARK_MODE_CODE, &DARK_MODE_FLAG, sizeof(DARK_MODE_FLAG));
 }
 
-void MainGame::loadImage()
+void MainWindow::mainInterval()
 {
-	images.way.load(":/Images/way.png");
-	images.finish.load(":/Images/finish.png");
-	images.player.load(":/Images/player.png");
-
-	for (int direct = UP; direct <= RIGHT; direct++)
-	{
-		images.wall[direct].load(QString(":/Images/wall_%1.png").arg(direct));
-	}
-}
-
-void MainGame::mainInterval()
-{
-	if (status == PLAYING)
-	{
-		playerMove();
-		gameover();
+    if (pGame->isPlaying())
+    {
+        updateElapseTime();
+        gamePlayerMove();
+        gameover();
     }
-    QWidget::update();
+    ui->pGraphics->update();
 }
 
-void MainGame::clockCallBack()
+void MainWindow::clockCallBack()
 {
-    if (status == PLAYING)
+    if (pGame->isPlaying())
     {
         elapseTime += 1;
     }
 }
 
-void MainGame::setInterval()
+void MainWindow::setInterval()
 {
-    timers.interval.setInterval(1000 / GAME_FPS);
-    timers.clock.setInterval(CLOCK_INTERVAL);
+    timers.interval.setInterval(1000 / GameTimers::GAME_FPS);
+    timers.clock.setInterval(GameTimers::CLOCK_INTERVAL);
 }
 
-void MainGame::connectTimer()
+void MainWindow::connectTimers()
 {
-    connect(&timers.interval, &QTimer::timeout, this, &MainGame::mainInterval);
-    connect(&timers.clock, &QTimer::timeout, this, &MainGame::clockCallBack);
+    connect(&timers.interval, &QTimer::timeout, this, &MainWindow::mainInterval);
+    connect(&timers.clock, &QTimer::timeout, this, &MainWindow::clockCallBack);
 }
 
-void MainGame::connectButton()
+void MainWindow::connectButtons()
 {
-	connect(ui->restartButton, &QPushButton::clicked, this, &MainGame::restart);
-	connect(ui->findButton, &QPushButton::clicked, this, &MainGame::getWayData);
+    connect(ui->pRestartButton, &QPushButton::clicked, this, &MainWindow::restartGame);
+    connect(ui->pFindButton, &QPushButton::clicked, this, &MainWindow::gameFindWay);
 }
 
-void MainGame::startTimer()
+void MainWindow::startTimers()
 {
     timers.interval.start();
 	timers.clock.start();
 }
 
-void MainGame::resetKeyStatus()
+void MainWindow::restartGame()
 {
-	for (int key = UP; key <= RIGHT; key++)
-	{
-		isKeyPress[key] = false;
-	}
-}
+    pGame->restart();
+    ui->pGraphics->clearWayData();
 
-void MainGame::restart()
-{
-	map.init();
-	map.generate();
-    player.init(BORDER, BORDER, &map);
-	wayData.clear();
-	resetKeyStatus();
-    status = PLAYING;
+    for (int key = UP; key <= RIGHT; key++)
+    {
+        isKeyPress[key] = false;
+    }
     elapseTime = 0;
-	isHaveTracked = false;
 }
 
-void MainGame::getWayData()
+void MainWindow::updateElapseTime()
 {
-	if (status == PLAYING)
-	{
-		int playerX = qRound(player.getRelativeX());
-		int playerY = qRound(player.getRelativeY());
-
-		wayData = map.getWayData(playerX, playerY);
-		wayDataIndex = wayData.length() - 1;
-		isHaveTracked = true;
-	}
+    ui->pTimeLabel->setText(QString("TIME: %1").arg(elapseTime));
 }
 
-void MainGame::playerMove()
+void MainWindow::gameFindWay()
 {
-	player.setIsOnMove(false);
-
-	for (int direct = UP; direct <= RIGHT; direct++)
-	{
-		if (isKeyPress[direct])
-		{
-			player.setIsOnMove(true);
-			player.setDirect((Direct)direct);
-		}
-	}
-	player.move();
+    ui->pGraphics->updateWayData();
 }
 
-void MainGame::gameover()
+void MainWindow::gamePlayerMove()
 {
-	double playerX = player.getRelativeX();
-	double playerY = player.getRelativeY();
+    pGame->setKeyStatus(isKeyPress);
+    pGame->playerMove();
+}
 
-	if (playerX == Map::ROWS - 1 && playerY == Map::COLS - 1)
-	{
-        status = OVER;
-        pSuccessDialog->openDialog(elapseTime, isHaveTracked);
+void MainWindow::gameover()
+{
+    if (pGame->isGameover())
+    {
+        pSuccessDialog->setDialogInfo(elapseTime, pGame->getIsHaveTracked());
+        pSuccessDialog->showDialog();
 
         if (pSuccessDialog->getIsNeedRestart())
-		{
-			restart();
-		}
-	}
+        {
+            restartGame();
+        }
+    }
 }
 
-void MainGame::keyPressEvent(QKeyEvent* pEvent)
+void MainWindow::keyPressEvent(QKeyEvent* pEvent)
 {
     switch (pEvent->key())
 	{
@@ -161,7 +132,7 @@ void MainGame::keyPressEvent(QKeyEvent* pEvent)
 	}
 }
 
-void MainGame::keyReleaseEvent(QKeyEvent* pEvent)
+void MainWindow::keyReleaseEvent(QKeyEvent* pEvent)
 {
     switch (pEvent->key())
 	{
@@ -170,78 +141,4 @@ void MainGame::keyReleaseEvent(QKeyEvent* pEvent)
 		case Qt::Key_A: isKeyPress[LEFT] = false; break;
 		case Qt::Key_D: isKeyPress[RIGHT] = false; break;
 	}
-}
-
-void MainGame::setPainter(QPainter& painter)
-{
-    painter.setViewport(0, MENU_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
-}
-
-void MainGame::displayBackground(QPainter& painter)
-{
-    painter.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, QColor(0x252525));
-}
-
-void MainGame::displayMap(QPainter& painter)
-{
-	static QRect wallRect;
-
-	for (int x = 0; x < Map::ROWS; x++)
-	{
-		for (int y = 0; y < Map::COLS; y++)
-		{
-			for (int direct = UP; direct <= RIGHT; direct++)
-			{
-				if (map.isHaveWall(x, y, (Direct)direct))
-				{
-					wallRect.setX(Map::UNIT_SIZE * x + BORDER - WALL_WIDTH);
-                    wallRect.setY(Map::UNIT_SIZE * y + BORDER - WALL_WIDTH);
-					wallRect.setWidth(Map::UNIT_SIZE + WALL_WIDTH * 2);
-					wallRect.setHeight(Map::UNIT_SIZE + WALL_WIDTH * 2);
-
-                    painter.drawPixmap(wallRect, images.wall[direct]);
-				}
-			}
-		}
-	}
-	int x = Map::UNIT_SIZE * (Map::ROWS - 1) + BORDER;
-    int y = Map::UNIT_SIZE * (Map::COLS - 1) + BORDER;
-
-    painter.drawPixmap(x, y, Map::UNIT_SIZE, Map::UNIT_SIZE, images.finish);
-}
-
-void MainGame::displayWay(QPainter& painter)
-{
-	if (!wayData.isEmpty())
-	{
-		for (int i = wayData.length() - 1; i >= wayDataIndex; i--)
-		{
-			int x = wayData[i].x() * Map::UNIT_SIZE + BORDER;
-            int y = wayData[i].y() * Map::UNIT_SIZE + BORDER;
-
-            painter.drawPixmap(x, y, Map::UNIT_SIZE, Map::UNIT_SIZE, images.way);
-		}
-		if (wayDataIndex > 0) { wayDataIndex -= 1; }
-	}
-}
-
-void MainGame::displayPlayer(QPainter& painter)
-{
-    painter.drawPixmap(player.x(), player.y(), Map::UNIT_SIZE, Map::UNIT_SIZE, images.player);
-}
-
-void MainGame::displayInfo()
-{
-    ui->timeLabel->setText(QString("TIME: %1").arg(elapseTime));
-}
-
-void MainGame::paintEvent(QPaintEvent*)
-{
-    QPainter painter(this);
-    setPainter(painter);
-    displayBackground(painter);
-    displayWay(painter);
-    displayMap(painter);
-    displayPlayer(painter);
-	displayInfo();
 }

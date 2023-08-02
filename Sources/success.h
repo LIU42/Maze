@@ -7,7 +7,7 @@ QT_BEGIN_NAMESPACE
 
 namespace Ui
 {
-	class SuccessDialog;
+    class SuccessDialog;
 }
 
 QT_END_NAMESPACE
@@ -16,20 +16,21 @@ class SuccessDialog : public QDialog
 {
 	Q_OBJECT
 
-	private:
-		Ui::SuccessDialog *ui;
+    private:
+        Ui::SuccessDialog *ui;
 		bool isNeedRestart;
 
 	private:
-		void setDialogFlags();
-		void connectSignals();
+        void setDialogFlags();
+        void connectButtons();
 
 	public:
 		SuccessDialog(QWidget* parent = nullptr);
 		~SuccessDialog();
 
 	public:
-		void openDialog(int, bool);
+        void setDialogInfo(int, bool);
+        void showDialog();
 		void closeDialog();
 
 	public:

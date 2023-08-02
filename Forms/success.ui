@@ -22,7 +22,7 @@
    <string notr="true">background-color: rgb(37, 37, 37);
 color: rgb(138, 138, 138);</string>
   </property>
-  <widget class="QPushButton" name="restartButton">
+  <widget class="QPushButton" name="pRestartButton">
    <property name="geometry">
     <rect>
      <x>275</x>
@@ -52,7 +52,7 @@ QPushButton:hover
     <string>RESTART</string>
    </property>
   </widget>
-  <widget class="QLabel" name="infoLabel">
+  <widget class="QLabel" name="pInfoLabel">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -78,7 +78,7 @@ QPushButton:hover
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="timeLabel">
+  <widget class="QLabel" name="pTimeLabel">
    <property name="geometry">
     <rect>
      <x>0</x>
