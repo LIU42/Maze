@@ -6,7 +6,7 @@ GraphicsWidget::GraphicsWidget(QWidget *parent): QWidget(parent)
     images.finish.load(":/Images/finish.png");
     images.player.load(":/Images/player.png");
 
-    for (int direct = UP; direct <= RIGHT; direct++)
+    for (int direct = DIRECT_UP; direct <= DIRECT_RIGHT; direct++)
     {
         images.wall[direct].load(QString(":/Images/wall_%1.png").arg(direct));
     }
@@ -14,22 +14,18 @@ GraphicsWidget::GraphicsWidget(QWidget *parent): QWidget(parent)
 
 void GraphicsWidget::displayMap(QPainter& painter)
 {
-    static QRect wallRect;
-
-    for (int x = 0; x < Map::ROWS; x++)
+    for (int i = 0; i < Map::ROWS; i++)
     {
-        for (int y = 0; y < Map::COLS; y++)
+        for (int j = 0; j < Map::COLS; j++)
         {
-            for (int direct = UP; direct <= RIGHT; direct++)
+            for (int direct = DIRECT_UP; direct <= DIRECT_RIGHT; direct++)
             {
-                if (pGame->isMapHaveWall(x, y, (Direct)direct))
+                if (pGame->isMapHaveWall(i, j, (Direct)direct))
                 {
-                    wallRect.setX(MazeBlockUnit::SIZE * x + BORDER - WALL_WIDTH);
-                    wallRect.setY(MazeBlockUnit::SIZE * y + BORDER - WALL_WIDTH);
-                    wallRect.setWidth(MazeBlockUnit::SIZE + WALL_WIDTH * 2);
-                    wallRect.setHeight(MazeBlockUnit::SIZE + WALL_WIDTH * 2);
+                    int x = MazeBlockUnit::SIZE * i + BORDER - WALL_WIDTH;
+                    int y = MazeBlockUnit::SIZE * j + BORDER - WALL_WIDTH;
 
-                    painter.drawPixmap(wallRect, images.wall[direct]);
+                    painter.drawPixmap(x, y, images.wall[direct]);
                 }
             }
         }
@@ -37,7 +33,7 @@ void GraphicsWidget::displayMap(QPainter& painter)
     int x = MazeBlockUnit::SIZE * (Map::ROWS - 1) + BORDER;
     int y = MazeBlockUnit::SIZE * (Map::COLS - 1) + BORDER;
 
-    painter.drawPixmap(x, y, MazeBlockUnit::SIZE, MazeBlockUnit::SIZE, images.finish);
+    painter.drawPixmap(x, y, images.finish);
 }
 
 void GraphicsWidget::displayWay(QPainter& painter)
@@ -49,7 +45,7 @@ void GraphicsWidget::displayWay(QPainter& painter)
             int x = wayData[i].x() * MazeBlockUnit::SIZE + BORDER;
             int y = wayData[i].y() * MazeBlockUnit::SIZE + BORDER;
 
-            painter.drawPixmap(x, y, MazeBlockUnit::SIZE, MazeBlockUnit::SIZE, images.way);
+            painter.drawPixmap(x, y, images.way);
         }
         if (wayDisplayIndex > 0) { wayDisplayIndex -= 1; }
     }
@@ -60,7 +56,7 @@ void GraphicsWidget::displayPlayer(QPainter& painter)
     int playerX = pGame->getPlayerX();
     int playerY = pGame->getPlayerY();
 
-    painter.drawPixmap(playerX, playerY, MazeBlockUnit::SIZE, MazeBlockUnit::SIZE, images.player);
+    painter.drawPixmap(playerX, playerY, images.player);
 }
 
 void GraphicsWidget::paintEvent(QPaintEvent* pPaintEvent)

@@ -3,19 +3,19 @@
 
 SuccessDialog::SuccessDialog(QWidget *parent): QDialog(parent), ui(new Ui::SuccessDialog)
 {
-	ui->setupUi(this);
+    ui->setupUi(this);
     setDialogFlags();
     connectButtons();
 }
 
 SuccessDialog::~SuccessDialog()
 {
-	delete ui;
+    delete ui;
 }
 
 void SuccessDialog::setDialogFlags()
 {
-	setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 }
 
 void SuccessDialog::connectButtons()
@@ -36,17 +36,17 @@ void SuccessDialog::setDialogInfo(int elapseTime, bool isHaveTracked)
 
 void SuccessDialog::showDialog()
 {
-	isNeedRestart = false;
-	QDialog::exec();
+    isNeedRestart = false;
+    QDialog::exec();
 }
 
 void SuccessDialog::closeDialog()
 {
-	isNeedRestart = true;
-	QDialog::close();
+    isNeedRestart = true;
+    QDialog::close();
 }
 
 bool SuccessDialog::getIsNeedRestart()
 {
-	return isNeedRestart;
+    return isNeedRestart;
 }

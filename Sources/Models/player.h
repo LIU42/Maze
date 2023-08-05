@@ -8,7 +8,7 @@ using BlockPoint = QPoint;
 
 class Player
 {
-	private:
+    private:
         static const int SPEED = 5;
         static const int INIT_POSITION_X = 20;
         static const int INIT_POSITION_Y = 20;
@@ -16,7 +16,7 @@ class Player
     private:
         Map* pMap;
 
-	private:
+    private:
         RelativePoint relativePoint;
         BlockPoint blockPoint;
         Direct forwardDirect;
@@ -39,19 +39,19 @@ class Player
 
     public:
         void setForwardDirect(Direct);
-		void setIsOnMove(bool);
+        void setIsOnMove(bool);
 
-	public:
+    public:
         void setMap(Map*);
         void reset();
-		void move();
+        void move();
 
     public:
         int getPositionX();
         int getPositionY();
 
-	public:
-		double getRelativeX();
-		double getRelativeY();
+    public:
+        double getRelativeX();
+        double getRelativeY();
 };
 #endif

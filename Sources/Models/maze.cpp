@@ -2,9 +2,9 @@
 
 void MainGame::setKeyStatus(bool isKeyPress[])
 {
-    for (int key = UP; key <= RIGHT; key++)
+    for (int direct = DIRECT_UP; direct <= DIRECT_RIGHT; direct++)
     {
-        this->isKeyPress[key] = isKeyPress[key];
+        this->isKeyPress[direct] = isKeyPress[direct];
     }
 }
 
@@ -19,7 +19,7 @@ void MainGame::restart()
     map.generateMaze();
     player.setMap(&map);
     player.reset();
-    status = PLAYING;
+    status = STATUS_PLAYING;
     isHaveTracked = false;
 }
 
@@ -27,7 +27,7 @@ void MainGame::playerMove()
 {
     player.setIsOnMove(false);
 
-    for (int direct = UP; direct <= RIGHT; direct++)
+    for (int direct = DIRECT_UP; direct <= DIRECT_RIGHT; direct++)
     {
         if (isKeyPress[direct])
         {
@@ -40,7 +40,7 @@ void MainGame::playerMove()
 
 MazeWayData MainGame::getWayData()
 {
-    if (status == PLAYING)
+    if (status == STATUS_PLAYING)
     {
         int playerX = qRound(player.getRelativeX());
         int playerY = qRound(player.getRelativeY());
@@ -68,7 +68,7 @@ bool MainGame::getIsHaveTracked()
 
 bool MainGame::isPlaying()
 {
-    return status == PLAYING;
+    return status == STATUS_PLAYING;
 }
 
 bool MainGame::isGameover()
@@ -78,7 +78,7 @@ bool MainGame::isGameover()
 
     if (playerX == Map::ROWS - 1 && playerY == Map::COLS - 1)
     {
-        status = OVER;
+        status = STATUS_OVER;
         return true;
     }
     return false;

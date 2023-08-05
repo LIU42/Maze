@@ -2,26 +2,26 @@
 
 void Map::initUnitMatrix()
 {
-	for (int x = 0; x < ROWS; x++)
-	{
-		for (int y = 0; y < COLS; y++)
-		{
-			for (int direct = UP; direct <= RIGHT; direct++)
+    for (int x = 0; x < ROWS; x++)
+    {
+        for (int y = 0; y < COLS; y++)
+        {
+            for (int direct = DIRECT_UP; direct <= DIRECT_RIGHT; direct++)
             {
                 unitMatrix[x][y].isWall[direct] = true;
             }
             unitMatrix[x][y].isVisited = false;
-		}
-	}
+        }
+    }
 }
 
 bool Map::isInRange(int x, int y)
 {
-	if (x >= 0 && x < ROWS && y >= 0 && y < COLS)
-	{
-		return true;
-	}
-	return false;
+    if (x >= 0 && x < ROWS && y >= 0 && y < COLS)
+    {
+        return true;
+    }
+    return false;
 }
 
 MazeNearbyList Map::getNearbyList(MazeBlockPoint& currentBlock)
@@ -32,21 +32,21 @@ MazeNearbyList Map::getNearbyList(MazeBlockPoint& currentBlock)
     int currentY = currentBlock.y();
 
     if (isInRange(currentX + 1, currentY) && !unitMatrix[currentX + 1][currentY].isVisited)
-	{
+    {
         nearbyList.append(MazeBlockPoint(currentX + 1, currentY));
     }
     if (isInRange(currentX - 1, currentY) && !unitMatrix[currentX - 1][currentY].isVisited)
-	{
+    {
         nearbyList.append(MazeBlockPoint(currentX - 1, currentY));
     }
     if (isInRange(currentX, currentY + 1) && !unitMatrix[currentX][currentY + 1].isVisited)
-	{
+    {
         nearbyList.append(MazeBlockPoint(currentX, currentY + 1));
     }
     if (isInRange(currentX, currentY - 1) && !unitMatrix[currentX][currentY - 1].isVisited)
-	{
+    {
         nearbyList.append(MazeBlockPoint(currentX, currentY - 1));
-	}
+    }
     return nearbyList;
 }
 
@@ -68,21 +68,21 @@ bool Map::isHaveWall(MazeBlockPoint& currentBlock, MazeBlockPoint& nearbyBlock)
 
     if (nearbyX == currentX && nearbyY < currentY)
     {
-        return unitMatrix[currentX][currentY].isWall[UP];
-	}
+        return unitMatrix[currentX][currentY].isWall[DIRECT_UP];
+    }
     else if (nearbyX == currentX && nearbyY > currentY)
     {
-        return unitMatrix[currentX][currentY].isWall[DOWN];
-	}
+        return unitMatrix[currentX][currentY].isWall[DIRECT_DOWN];
+    }
     else if (nearbyX < currentX && nearbyY == currentY)
     {
-        return unitMatrix[currentX][currentY].isWall[LEFT];
-	}
+        return unitMatrix[currentX][currentY].isWall[DIRECT_LEFT];
+    }
     else if (nearbyX > currentX && nearbyY == currentY)
     {
-        return unitMatrix[currentX][currentY].isWall[RIGHT];
-	}
-	return true;
+        return unitMatrix[currentX][currentY].isWall[DIRECT_RIGHT];
+    }
+    return true;
 }
 
 void Map::removeWall(MazeBlockPoint& currentBlock, MazeBlockPoint& nearbyBlock)
@@ -93,25 +93,25 @@ void Map::removeWall(MazeBlockPoint& currentBlock, MazeBlockPoint& nearbyBlock)
     int nearbyY = nearbyBlock.y();
 
     if (nearbyX == currentX && nearbyY < currentY)
-	{
-        unitMatrix[currentX][currentY].isWall[UP] = false;
-        unitMatrix[nearbyX][nearbyY].isWall[DOWN] = false;
-	}
+    {
+        unitMatrix[currentX][currentY].isWall[DIRECT_UP] = false;
+        unitMatrix[nearbyX][nearbyY].isWall[DIRECT_DOWN] = false;
+    }
     else if (nearbyX == currentX && nearbyY > currentY)
     {
-        unitMatrix[currentX][currentY].isWall[DOWN] = false;
-        unitMatrix[nearbyX][nearbyY].isWall[UP] = false;
-	}
+        unitMatrix[currentX][currentY].isWall[DIRECT_DOWN] = false;
+        unitMatrix[nearbyX][nearbyY].isWall[DIRECT_UP] = false;
+    }
     else if (nearbyX < currentX && nearbyY == currentY)
     {
-        unitMatrix[currentX][currentY].isWall[LEFT] = false;
-        unitMatrix[nearbyX][nearbyY].isWall[RIGHT] = false;
-	}
+        unitMatrix[currentX][currentY].isWall[DIRECT_LEFT] = false;
+        unitMatrix[nearbyX][nearbyY].isWall[DIRECT_RIGHT] = false;
+    }
     else if (nearbyX > currentX && nearbyY == currentY)
     {
-        unitMatrix[currentX][currentY].isWall[RIGHT] = false;
-        unitMatrix[nearbyX][nearbyY].isWall[LEFT] = false;
-	}
+        unitMatrix[currentX][currentY].isWall[DIRECT_RIGHT] = false;
+        unitMatrix[nearbyX][nearbyY].isWall[DIRECT_LEFT] = false;
+    }
 }
 
 void Map::setPreBlock(MazeBlockPoint& currentBlock, MazeBlockPoint& nearbyBlock)
@@ -141,29 +141,29 @@ void Map::generateMaze()
     MazeNearbyList nearbyList;
     MazeBlockPoint currentBlock;
     MazeBlockPoint nearbyBlock;
-	int visitCount = 0;
+    int visitCount = 0;
 
     currentBlock.setX(rand() % ROWS);
     currentBlock.setY(rand() % COLS);
     setVisited(currentBlock, visitCount);
 
-	while (visitCount < ROWS * COLS)
-	{
+    while (visitCount < ROWS * COLS)
+    {
         nearbyList = getNearbyList(currentBlock);
 
         if (!nearbyList.isEmpty())
-		{
+        {
             nearbyBlock = nearbyList[rand() % nearbyList.length()];
             blockStack.push(currentBlock);
             removeWall(currentBlock, nearbyBlock);
             setVisited(nearbyBlock, visitCount);
             currentBlock = nearbyBlock;
-		}
+        }
         else if (!blockStack.isEmpty())
-		{
+        {
             currentBlock = blockStack.pop();
-		}
-	}
+        }
+    }
 }
 
 bool Map::isHaveWall(int x, int y, Direct direct)
@@ -177,46 +177,46 @@ MazeWayData Map::getWayData(int initX, int initY)
     MazeNearbyList nearbyList;
     MazeBlockPoint currentBlock;
     MazeWayData wayData;
-	int visitCount = 0;
+    int visitCount = 0;
 
-	for (int x = 0; x < ROWS; x++)
-	{
-		for (int y = 0; y < COLS; y++)
+    for (int x = 0; x < ROWS; x++)
+    {
+        for (int y = 0; y < COLS; y++)
         {
             unitMatrix[x][y].isVisited = false;
             unitMatrix[x][y].stepCount = 0;
-		}
-	}
+        }
+    }
     currentBlock.setX(initX);
     currentBlock.setY(initY);
     setVisited(currentBlock, visitCount);
     blockQueue.enqueue(currentBlock);
 
     while (!blockQueue.isEmpty())
-	{
+    {
         currentBlock = blockQueue.front();
 
         if (currentBlock.x() == ROWS - 1 && currentBlock.y() == COLS - 1)
-		{
-			break;
-		}
+        {
+            break;
+        }
         nearbyList = getNearbyList(currentBlock);
 
         for (int i = 0; i < nearbyList.length(); i++)
-		{
+        {
             if (!isHaveWall(currentBlock, nearbyList[i]))
-			{
+            {
                 blockQueue.enqueue(nearbyList[i]);
                 setPreBlock(currentBlock, nearbyList[i]);
                 setVisited(nearbyList[i], visitCount);
-			}
-		}
+            }
+        }
         blockQueue.dequeue();
-	}
+    }
     for (int stepCount = getStepCount(currentBlock); stepCount >= 0; stepCount--)
-	{
+    {
         wayData.append(currentBlock);
         currentBlock = getPreBlock(currentBlock);
-	}
-	return wayData;
+    }
+    return wayData;
 }

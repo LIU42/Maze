@@ -12,21 +12,21 @@ void Player::setForwardDirect(Direct direct)
 
 void Player::setIsOnMove(bool isOnMove)
 {
-	this->isOnMove = isOnMove;
+    this->isOnMove = isOnMove;
 }
 
 void Player::reset()
 {
     positionX = INIT_POSITION_X;
     positionY = INIT_POSITION_Y;
-    forwardDirect = UP;
+    forwardDirect = DIRECT_UP;
     isOnMove = false;
 }
 
 void Player::move()
 {
-	if (isOnMove)
-	{
+    if (isOnMove)
+    {
         relativePoint.setX(getRelativeX());
         relativePoint.setY(getRelativeY());
 
@@ -34,13 +34,13 @@ void Player::move()
         blockPoint.setY(qRound(relativePoint.y()));
 
         switch (forwardDirect)
-		{
-            case UP: moveUp(); break;
-            case DOWN: moveDown(); break;
-            case LEFT: moveLeft(); break;
-            case RIGHT: moveRight(); break;
-		}
-	}
+        {
+            case DIRECT_UP: moveUp(); break;
+            case DIRECT_DOWN: moveDown(); break;
+            case DIRECT_LEFT: moveLeft(); break;
+            case DIRECT_RIGHT: moveRight(); break;
+        }
+    }
 }
 
 bool Player::isForwardHaveWall()
@@ -51,67 +51,67 @@ bool Player::isForwardHaveWall()
 void Player::horizonDiffHandler()
 {
     if (!isForwardHaveWall())
-	{
+    {
         if (blockPoint.x() > relativePoint.x()) { moveRight(); }
         if (blockPoint.x() < relativePoint.x()) { moveLeft(); }
-	}
+    }
 }
 
 void Player::verticalDiffHandler()
 {
     if (!isForwardHaveWall())
-	{
+    {
         if (blockPoint.y() > relativePoint.y()) { moveDown(); }
         if (blockPoint.y() < relativePoint.y()) { moveUp(); }
-	}
+    }
 }
 
 void Player::moveUp()
 {
     if (relativePoint.x() != blockPoint.x())
-	{
+    {
         horizonDiffHandler();
-	}
+    }
     else if (relativePoint.y() != blockPoint.y() || !isForwardHaveWall())
     {
         positionY -= SPEED;
-	}
+    }
 }
 
 void Player::moveDown()
 {
     if (relativePoint.x() != blockPoint.x())
-	{
+    {
         horizonDiffHandler();
-	}
+    }
     else if (relativePoint.y() != blockPoint.y() || !isForwardHaveWall())
     {
         positionY += SPEED;
-	}
+    }
 }
 
 void Player::moveLeft()
 {
     if (relativePoint.y() != blockPoint.y())
-	{
+    {
         verticalDiffHandler();
-	}
+    }
     else if (relativePoint.x() != blockPoint.x() || !isForwardHaveWall())
     {
         positionX -= SPEED;
-	}
+    }
 }
 
 void Player::moveRight()
 {
     if (relativePoint.y() != blockPoint.y())
-	{
+    {
         verticalDiffHandler();
-	}
+    }
     else if (relativePoint.x() != blockPoint.x() || !isForwardHaveWall())
     {
         positionX += SPEED;
-	}
+    }
 }
 
 int Player::getPositionX()

@@ -4,7 +4,11 @@
 #include "map.h"
 #include "player.h"
 
-enum GameStatus { PLAYING, OVER };
+enum GameStatus
+{
+    STATUS_PLAYING,
+    STATUS_OVER
+};
 
 class MainGame
 {

@@ -21,9 +21,9 @@ void MainWindow::setGame(MainGame* pGame)
 
 void MainWindow::init()
 {
-	srand((unsigned)time(NULL));
-	setDarkMode();
-	setInterval();
+    srand((unsigned)time(NULL));
+    setDarkMode();
+    setInterval();
     connectTimers();
     connectButtons();
     startTimers();
@@ -76,7 +76,7 @@ void MainWindow::connectButtons()
 void MainWindow::startTimers()
 {
     timers.interval.start();
-	timers.clock.start();
+    timers.clock.start();
 }
 
 void MainWindow::restartGame()
@@ -84,9 +84,9 @@ void MainWindow::restartGame()
     pGame->restart();
     ui->pGraphics->clearWayData();
 
-    for (int key = UP; key <= RIGHT; key++)
+    for (int direct = DIRECT_UP; direct <= DIRECT_RIGHT; direct++)
     {
-        isKeyPress[key] = false;
+        isKeyPress[direct] = false;
     }
     elapseTime = 0;
 }
@@ -124,21 +124,21 @@ void MainWindow::gameover()
 void MainWindow::keyPressEvent(QKeyEvent* pEvent)
 {
     switch (pEvent->key())
-	{
-		case Qt::Key_W: isKeyPress[UP] = true; break;
-		case Qt::Key_S: isKeyPress[DOWN] = true; break;
-		case Qt::Key_A: isKeyPress[LEFT] = true; break;
-		case Qt::Key_D: isKeyPress[RIGHT] = true; break;
-	}
+    {
+        case Qt::Key_W: isKeyPress[DIRECT_UP] = true; break;
+        case Qt::Key_S: isKeyPress[DIRECT_DOWN] = true; break;
+        case Qt::Key_A: isKeyPress[DIRECT_LEFT] = true; break;
+        case Qt::Key_D: isKeyPress[DIRECT_RIGHT] = true; break;
+    }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent* pEvent)
 {
     switch (pEvent->key())
-	{
-		case Qt::Key_W: isKeyPress[UP] = false; break;
-		case Qt::Key_S: isKeyPress[DOWN] = false; break;
-		case Qt::Key_A: isKeyPress[LEFT] = false; break;
-		case Qt::Key_D: isKeyPress[RIGHT] = false; break;
-	}
+    {
+        case Qt::Key_W: isKeyPress[DIRECT_UP] = false; break;
+        case Qt::Key_S: isKeyPress[DIRECT_DOWN] = false; break;
+        case Qt::Key_A: isKeyPress[DIRECT_LEFT] = false; break;
+        case Qt::Key_D: isKeyPress[DIRECT_RIGHT] = false; break;
+    }
 }

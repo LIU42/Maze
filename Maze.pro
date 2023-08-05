@@ -14,22 +14,22 @@ SOURCES += \
     Sources/graphics.cpp \
     Sources/main.cpp \
     Sources/mainwindow.cpp \
-    Sources/map.cpp \
-    Sources/maze.cpp \
-    Sources/player.cpp \
-    Sources/success.cpp
+	Sources/Models/map.cpp \
+	Sources/Models/maze.cpp \
+	Sources/Models/player.cpp \
+	Sources/Dialogs/success.cpp
 
 HEADERS += \
     Sources/graphics.h \
     Sources/mainwindow.h \
-    Sources/map.h \
-    Sources/maze.h \
-    Sources/player.h \
-    Sources/success.h
+	Sources/Models/map.h \
+	Sources/Models/maze.h \
+	Sources/Models/player.h \
+	Sources/Dialogs/success.h
 
 FORMS += \
 	Forms/mainwindow.ui \
-	Forms/success.ui
+	Forms/Dialogs/success.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

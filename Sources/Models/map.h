@@ -12,7 +12,13 @@ using MazeBlockQueue = QQueue<QPoint>;
 using MazeNearbyList = QVector<QPoint>;
 using MazeWayData = QVector<QPoint>;
 
-enum Direct { UP, DOWN, LEFT, RIGHT };
+enum Direct
+{
+    DIRECT_UP,
+    DIRECT_DOWN,
+    DIRECT_LEFT,
+    DIRECT_RIGHT
+};
 
 class MazeBlockUnit
 {
@@ -33,33 +39,33 @@ class MazeBlockUnit
 
 class Map
 {
-	public:
-		static const int ROWS = 30;
+    public:
+        static const int ROWS = 30;
         static const int COLS = 20;
 
     private:
         MazeBlockUnit unitMatrix[ROWS][COLS];
 
-	private:
+    private:
         MazeNearbyList getNearbyList(MazeBlockPoint&);
         MazeBlockPoint getPreBlock(MazeBlockPoint&);
         int getStepCount(MazeBlockPoint&);
 
-	private:
+    private:
         void setVisited(MazeBlockPoint&, int&);
         void removeWall(MazeBlockPoint&, MazeBlockPoint&);
         void setPreBlock(MazeBlockPoint&, MazeBlockPoint&);
 
-	private:
-		bool isInRange(int, int);
+    private:
+        bool isInRange(int, int);
         bool isHaveWall(MazeBlockPoint&, MazeBlockPoint&);
 
-	public:
+    public:
         void initUnitMatrix();
         void generateMaze();
 
-	public:
-		bool isHaveWall(int, int, Direct);
+    public:
+        bool isHaveWall(int, int, Direct);
         MazeWayData getWayData(int, int);
 };
 #endif

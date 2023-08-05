@@ -14,26 +14,26 @@ QT_END_NAMESPACE
 
 class SuccessDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
     private:
         Ui::SuccessDialog *ui;
-		bool isNeedRestart;
+        bool isNeedRestart;
 
-	private:
+    private:
         void setDialogFlags();
         void connectButtons();
 
-	public:
-		SuccessDialog(QWidget* parent = nullptr);
-		~SuccessDialog();
+    public:
+        SuccessDialog(QWidget* parent = nullptr);
+        ~SuccessDialog();
 
-	public:
+    public:
         void setDialogInfo(int, bool);
         void showDialog();
-		void closeDialog();
+        void closeDialog();
 
-	public:
-		bool getIsNeedRestart();
+    public:
+        bool getIsNeedRestart();
 };
 #endif

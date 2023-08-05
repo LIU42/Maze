@@ -3,15 +3,12 @@
 
 #include <QApplication>
 #include <QMainWindow>
-#include <QPainter>
 #include <QTimer>
 #include <QKeyEvent>
-
 #include <dwmapi.h>
-#include <time.h>
 
-#include "maze.h"
-#include "success.h"
+#include "Dialogs/success.h"
+#include "Models/maze.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -41,7 +38,7 @@ class MainWindow : public QMainWindow
 
     private:
         static const int DARK_MODE_FLAG = 1;
-		static const int DARK_MODE_CODE = 20;
+        static const int DARK_MODE_CODE = 20;
 
     private:
         Ui::MainWindow* ui;
@@ -55,8 +52,8 @@ class MainWindow : public QMainWindow
         bool isKeyPress[MazeBlockUnit::DIRECT_COUNT];
         int elapseTime;
 
-	private:
-		void setDarkMode();
+    private:
+        void setDarkMode();
         void setInterval();
         void connectTimers();
         void connectButtons();
@@ -64,23 +61,23 @@ class MainWindow : public QMainWindow
 
     private:
         void mainInterval();
-		void clockCallBack();
+        void clockCallBack();
         void updateElapseTime();
         void gameFindWay();
         void gamePlayerMove();
         void gameover();
         void restartGame();
 
-	private:
-		void keyPressEvent(QKeyEvent*);
-		void keyReleaseEvent(QKeyEvent*);
+    private:
+        void keyPressEvent(QKeyEvent*);
+        void keyReleaseEvent(QKeyEvent*);
 
     public:
         MainWindow(QWidget* parent = nullptr);
         ~MainWindow();
 
-	public:
+    public:
         void setGame(MainGame*);
-		void init();
+        void init();
 };
 #endif
