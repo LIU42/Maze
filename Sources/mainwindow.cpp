@@ -1,4 +1,4 @@
-﻿#include "mainwindow.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWindow)
@@ -19,9 +19,8 @@ void MainWindow::setGame(MainGame* pGame)
     ui->pGraphics->setGame(pGame);
 }
 
-void MainWindow::init()
+void MainWindow::initialize()
 {
-    srand((unsigned)time(NULL));
     setDarkMode();
     setInterval();
     connectTimers();
@@ -121,9 +120,9 @@ void MainWindow::gameover()
     }
 }
 
-void MainWindow::keyPressEvent(QKeyEvent* pEvent)
+void MainWindow::keyPressEvent(QKeyEvent* pKeyEvent)
 {
-    switch (pEvent->key())
+    switch (pKeyEvent->key())
     {
         case Qt::Key_W: isKeyPress[DIRECT_UP] = true; break;
         case Qt::Key_S: isKeyPress[DIRECT_DOWN] = true; break;
@@ -132,9 +131,9 @@ void MainWindow::keyPressEvent(QKeyEvent* pEvent)
     }
 }
 
-void MainWindow::keyReleaseEvent(QKeyEvent* pEvent)
+void MainWindow::keyReleaseEvent(QKeyEvent* pKeyEvent)
 {
-    switch (pEvent->key())
+    switch (pKeyEvent->key())
     {
         case Qt::Key_W: isKeyPress[DIRECT_UP] = false; break;
         case Qt::Key_S: isKeyPress[DIRECT_DOWN] = false; break;

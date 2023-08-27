@@ -1,4 +1,4 @@
-﻿#include "graphics.h"
+#include "graphics.h"
 
 GraphicsWidget::GraphicsWidget(QWidget *parent): QWidget(parent)
 {
@@ -12,7 +12,7 @@ GraphicsWidget::GraphicsWidget(QWidget *parent): QWidget(parent)
     }
 }
 
-void GraphicsWidget::displayMap(QPainter& painter)
+void GraphicsWidget::paintMap(QPainter& painter)
 {
     for (int i = 0; i < Map::ROWS; i++)
     {
@@ -36,7 +36,7 @@ void GraphicsWidget::displayMap(QPainter& painter)
     painter.drawPixmap(x, y, images.finish);
 }
 
-void GraphicsWidget::displayWay(QPainter& painter)
+void GraphicsWidget::paintWay(QPainter& painter)
 {
     if (!wayData.isEmpty())
     {
@@ -51,7 +51,7 @@ void GraphicsWidget::displayWay(QPainter& painter)
     }
 }
 
-void GraphicsWidget::displayPlayer(QPainter& painter)
+void GraphicsWidget::paintPlayer(QPainter& painter)
 {
     int playerX = pGame->getPlayerX();
     int playerY = pGame->getPlayerY();
@@ -64,9 +64,9 @@ void GraphicsWidget::paintEvent(QPaintEvent* pPaintEvent)
     Q_UNUSED(pPaintEvent);
     QPainter painter(this);
 
-    displayWay(painter);
-    displayMap(painter);
-    displayPlayer(painter);
+    paintWay(painter);
+    paintMap(painter);
+    paintPlayer(painter);
 }
 
 void GraphicsWidget::setGame(MainGame* pGame)

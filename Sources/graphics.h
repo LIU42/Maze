@@ -1,4 +1,4 @@
-﻿#ifndef __GRAPHICS_H__
+#ifndef __GRAPHICS_H__
 #define __GRAPHICS_H__
 
 #include <QWidget>
@@ -36,9 +36,9 @@ class GraphicsWidget : public QWidget
         int wayDisplayIndex;
 
     private:
-        void displayMap(QPainter&);
-        void displayWay(QPainter&);
-        void displayPlayer(QPainter&);
+        void paintMap(QPainter&);
+        void paintWay(QPainter&);
+        void paintPlayer(QPainter&);
 
     private:
         void paintEvent(QPaintEvent*);
