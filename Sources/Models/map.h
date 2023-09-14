@@ -1,5 +1,5 @@
-﻿#ifndef __MAP_H__
-#define __MAP_H__
+#ifndef __MODELS_MAP_H__
+#define __MODELS_MAP_H__
 
 #include <QVector>
 #include <QPoint>

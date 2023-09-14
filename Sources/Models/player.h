@@ -1,5 +1,5 @@
-﻿#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#ifndef __MODELS_PLAYER_H__
+#define __MODELS_PLAYER_H__
 
 #include "map.h"
 

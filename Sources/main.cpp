@@ -16,8 +16,8 @@ int main(int argc, char* argv[])
     setRandomSeed();
 
     QApplication app(argc, argv);
-    MainWindow window;
     MainGame game;
+    MainWindow window;
 
     window.setGame(&game);
     window.initialize();

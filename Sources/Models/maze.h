@@ -1,5 +1,5 @@
-﻿#ifndef __MAZE_H__
-#define __MAZE_H__
+#ifndef __MODELS_MAZE_H__
+#define __MODELS_MAZE_H__
 
 #include "map.h"
 #include "player.h"
