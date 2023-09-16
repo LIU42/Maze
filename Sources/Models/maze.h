@@ -6,7 +6,7 @@
 
 enum GameStatus
 {
-    STATUS_PLAYING,
+    STATUS_PROGRESS,
     STATUS_OVER
 };
 

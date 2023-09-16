@@ -19,7 +19,7 @@ void MainGame::restart()
     map.generateMaze();
     player.setMap(&map);
     player.reset();
-    status = STATUS_PLAYING;
+    status = STATUS_PROGRESS;
     isHaveTracked = false;
 }
 
@@ -40,7 +40,7 @@ void MainGame::playerMove()
 
 MazeWayData MainGame::getWayData()
 {
-    if (status == STATUS_PLAYING)
+    if (status == STATUS_PROGRESS)
     {
         int playerX = qRound(player.getRelativeX());
         int playerY = qRound(player.getRelativeY());
@@ -68,7 +68,7 @@ bool MainGame::getIsHaveTracked()
 
 bool MainGame::isPlaying()
 {
-    return status == STATUS_PLAYING;
+    return status == STATUS_PROGRESS;
 }
 
 bool MainGame::isGameover()
