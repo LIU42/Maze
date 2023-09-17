@@ -1,7 +1,7 @@
 #ifndef __MODELS_PLAYER_H__
 #define __MODELS_PLAYER_H__
 
-#include "map.h"
+#include "Models/Map.h"
 
 using RelativePoint = QPointF;
 using BlockPoint = QPoint;

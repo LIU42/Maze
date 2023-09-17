@@ -1,4 +1,4 @@
-﻿#include "maze.h"
+#include "Models/Maze.h"
 
 void MainGame::setKeyStatus(bool isKeyPress[])
 {
@@ -19,7 +19,7 @@ void MainGame::restart()
     map.generateMaze();
     player.setMap(&map);
     player.reset();
-    status = STATUS_PROGRESS;
+    status = STATUS_MAINLOOP;
     isHaveTracked = false;
 }
 
@@ -40,7 +40,7 @@ void MainGame::playerMove()
 
 MazeWayData MainGame::getWayData()
 {
-    if (status == STATUS_PROGRESS)
+    if (status == STATUS_MAINLOOP)
     {
         int playerX = qRound(player.getRelativeX());
         int playerY = qRound(player.getRelativeY());
@@ -66,9 +66,9 @@ bool MainGame::getIsHaveTracked()
     return isHaveTracked;
 }
 
-bool MainGame::isPlaying()
+bool MainGame::isInMainLoop()
 {
-    return status == STATUS_PROGRESS;
+    return status == STATUS_MAINLOOP;
 }
 
 bool MainGame::isGameover()
@@ -78,7 +78,7 @@ bool MainGame::isGameover()
 
     if (playerX == Map::ROWS - 1 && playerY == Map::COLS - 1)
     {
-        status = STATUS_OVER;
+        status = STATUS_GAMEOVER;
         return true;
     }
     return false;

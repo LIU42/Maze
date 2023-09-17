@@ -1,5 +1,5 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "MainWindow.h"
+#include "ui_MainWindow.h"
 
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -37,7 +37,7 @@ void MainWindow::setDarkMode()
 
 void MainWindow::mainInterval()
 {
-    if (pGame->isPlaying())
+    if (pGame->isInMainLoop())
     {
         updateElapseTime();
         gamePlayerMove();
@@ -48,7 +48,7 @@ void MainWindow::mainInterval()
 
 void MainWindow::clockCallBack()
 {
-    if (pGame->isPlaying())
+    if (pGame->isInMainLoop())
     {
         elapseTime += 1;
     }

@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QPainter>
 
-#include "Models/maze.h"
+#include "Models/Maze.h"
 
 class GameImages
 {

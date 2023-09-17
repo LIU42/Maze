@@ -10,26 +10,28 @@ LIBS += Dwmapi.lib
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+INCLUDEPATH += $$PWD/Headers/
+
 SOURCES += \
-    Sources/graphics.cpp \
-    Sources/main.cpp \
-    Sources/mainwindow.cpp \
-	Sources/Models/map.cpp \
-	Sources/Models/maze.cpp \
-	Sources/Models/player.cpp \
-	Sources/Dialogs/success.cpp
+    Sources/Graphics.cpp \
+    Sources/Main.cpp \
+    Sources/MainWindow.cpp \
+	Sources/Models/Map.cpp \
+	Sources/Models/Maze.cpp \
+	Sources/Models/Player.cpp \
+	Sources/Dialogs/Success.cpp
 
 HEADERS += \
-    Sources/graphics.h \
-    Sources/mainwindow.h \
-	Sources/Models/map.h \
-	Sources/Models/maze.h \
-	Sources/Models/player.h \
-	Sources/Dialogs/success.h
+    Headers/Graphics.h \
+    Headers/MainWindow.h \
+	Headers/Models/Map.h \
+	Headers/Models/Maze.h \
+	Headers/Models/Player.h \
+	Headers/Dialogs/Success.h
 
 FORMS += \
-	Forms/mainwindow.ui \
-	Forms/Dialogs/success.ui
+	Forms/MainWindow.ui \
+	Forms/Dialogs/Success.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -37,6 +39,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    Resources/resource.qrc
+    Resources/Resources.qrc
 
 RC_ICONS = Resources/Images/icon.ico

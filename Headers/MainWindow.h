@@ -7,8 +7,8 @@
 #include <QKeyEvent>
 #include <dwmapi.h>
 
-#include "Dialogs/success.h"
-#include "Models/maze.h"
+#include "Dialogs/Success.h"
+#include "Models/Maze.h"
 
 QT_BEGIN_NAMESPACE
 

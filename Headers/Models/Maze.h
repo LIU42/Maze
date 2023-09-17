@@ -1,13 +1,13 @@
 #ifndef __MODELS_MAZE_H__
 #define __MODELS_MAZE_H__
 
-#include "map.h"
-#include "player.h"
+#include "Models/Map.h"
+#include "Models/Player.h"
 
 enum GameStatus
 {
-    STATUS_PROGRESS,
-    STATUS_OVER
+    STATUS_MAINLOOP,
+    STATUS_GAMEOVER
 };
 
 class MainGame
@@ -39,7 +39,7 @@ class MainGame
 
     public:
         bool getIsHaveTracked();
-        bool isPlaying();
+        bool isInMainLoop();
         bool isGameover();
         bool isMapHaveWall(int, int, Direct);
 };
