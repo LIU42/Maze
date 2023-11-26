@@ -5,7 +5,6 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QKeyEvent>
-#include <dwmapi.h>
 
 #include "Dialogs/Success.h"
 #include "Models/Maze.h"
@@ -21,13 +20,11 @@ QT_END_NAMESPACE
 
 class GameTimers
 {
-    friend class MainWindow;
-
-    private:
+    public:
         static const int CLOCK_INTERVAL = 1000;
         static const int GAME_FPS = 60;
 
-    private:
+    public:
         QTimer interval;
         QTimer clock;
 };
@@ -35,10 +32,6 @@ class GameTimers
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
-    private:
-        static const int DARK_MODE_FLAG = 1;
-        static const int DARK_MODE_CODE = 20;
 
     private:
         Ui::MainWindow* ui;
@@ -53,7 +46,6 @@ class MainWindow : public QMainWindow
         int elapseTime;
 
     private:
-        void setDarkMode();
         void setInterval();
         void connectTimers();
         void connectButtons();

@@ -21,18 +21,11 @@ void MainWindow::setGame(MainGame* pGame)
 
 void MainWindow::initialize()
 {
-    setDarkMode();
     setInterval();
     connectTimers();
     connectButtons();
     startTimers();
     restartGame();
-}
-
-void MainWindow::setDarkMode()
-{
-    DwmSetWindowAttribute((HWND)this->winId(), DARK_MODE_CODE, &DARK_MODE_FLAG, sizeof(DARK_MODE_FLAG));
-    DwmSetWindowAttribute((HWND)pSuccessDialog->winId(), DARK_MODE_CODE, &DARK_MODE_FLAG, sizeof(DARK_MODE_FLAG));
 }
 
 void MainWindow::mainInterval()

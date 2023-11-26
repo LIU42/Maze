@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "QStyleHints"
 
 void setHighDPIScalePolicy()
 {
@@ -19,6 +20,7 @@ int main(int argc, char* argv[])
     MainGame game;
     MainWindow window;
 
+    app.setStyle("fusion");
     window.setGame(&game);
     window.initialize();
     window.show();

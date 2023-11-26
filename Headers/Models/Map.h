@@ -22,16 +22,14 @@ enum Direct
 
 class MazeBlockUnit
 {
-    friend class Map;
-
     public:
         static const int SIZE = 30;
         static const int DIRECT_COUNT = 4;
 
-    private:
+    public:
         MazeBlockPoint preBlock;
 
-    private:
+    public:
         bool isWall[DIRECT_COUNT];
         bool isVisited;
         int stepCount;

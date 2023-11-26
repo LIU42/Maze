@@ -8,9 +8,7 @@
 
 class GameImages
 {
-    friend class GraphicsWidget;
-
-    private:
+    public:
         QPixmap way;
         QPixmap finish;
         QPixmap player;
