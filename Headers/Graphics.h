@@ -34,18 +34,18 @@ class GraphicsWidget : public QWidget
         int wayDisplayIndex;
 
     private:
-        void paintMap(QPainter&);
-        void paintWay(QPainter&);
-        void paintPlayer(QPainter&);
+        void paintMap(QPainter& painter);
+        void paintWay(QPainter& painter);
+        void paintPlayer(QPainter& painter);
 
     private:
-        void paintEvent(QPaintEvent*);
+        void paintEvent(QPaintEvent* pPaintEvent);
 
     public:
         GraphicsWidget(QWidget* parent = nullptr);
 
     public:
-        void setGame(MainGame*);
+        void setGame(MainGame* pGame);
         void updateWayData();
         void clearWayData();
 };

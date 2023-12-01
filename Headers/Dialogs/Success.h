@@ -29,7 +29,7 @@ class SuccessDialog : public QDialog
         ~SuccessDialog();
 
     public:
-        void setDialogInfo(int, bool);
+        void setDialogInfo(int elapseTime, bool isHaveTracked);
         void showDialog();
         void closeDialog();
 

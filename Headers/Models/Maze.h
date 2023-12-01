@@ -25,7 +25,7 @@ class MainGame
         bool isHaveTracked;
 
     public:
-        void setKeyStatus(bool[]);
+        void setKeyStatus(bool isKeyPress[]);
         void setTracked();
         void playerMove();
         void restart();
@@ -41,6 +41,6 @@ class MainGame
         bool getIsHaveTracked();
         bool isInMainLoop();
         bool isGameover();
-        bool isMapHaveWall(int, int, Direct);
+        bool isMapHaveWall(int x, int y, Direct direct);
 };
 #endif

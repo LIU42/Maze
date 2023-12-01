@@ -61,15 +61,15 @@ class MainWindow : public QMainWindow
         void restartGame();
 
     private:
-        void keyPressEvent(QKeyEvent*);
-        void keyReleaseEvent(QKeyEvent*);
+        void keyPressEvent(QKeyEvent* pKeyEvent);
+        void keyReleaseEvent(QKeyEvent* pKeyEvent);
 
     public:
         MainWindow(QWidget* parent = nullptr);
         ~MainWindow();
 
     public:
-        void setGame(MainGame*);
+        void setGame(MainGame* pGame);
         void initialize();
 };
 #endif

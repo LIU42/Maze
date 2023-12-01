@@ -45,25 +45,25 @@ class Map
         MazeBlockUnit unitMatrix[ROWS][COLS];
 
     private:
-        MazeNearbyList getNearbyList(MazeBlockPoint&);
-        MazeBlockPoint getPreBlock(MazeBlockPoint&);
-        int getStepCount(MazeBlockPoint&);
+        MazeNearbyList getNearbyList(MazeBlockPoint& currentBlock);
+        MazeBlockPoint getPreBlock(MazeBlockPoint& block);
+        int getStepCount(MazeBlockPoint& block);
 
     private:
-        void setVisited(MazeBlockPoint&, int&);
-        void removeWall(MazeBlockPoint&, MazeBlockPoint&);
-        void setPreBlock(MazeBlockPoint&, MazeBlockPoint&);
+        void setVisited(MazeBlockPoint& block, int& visitedCount);
+        void removeWall(MazeBlockPoint& currentBlock, MazeBlockPoint& nearbyBlock);
+        void setPreBlock(MazeBlockPoint& currentBlock, MazeBlockPoint& nearbyBlock);
 
     private:
-        bool isInRange(int, int);
-        bool isHaveWall(MazeBlockPoint&, MazeBlockPoint&);
+        bool isInRange(int x, int y);
+        bool isHaveWall(MazeBlockPoint& currentBlock, MazeBlockPoint& nearbyBlock);
 
     public:
         void initUnitMatrix();
         void generateMaze();
 
     public:
-        bool isHaveWall(int, int, Direct);
-        MazeWayData getWayData(int, int);
+        bool isHaveWall(int x, int y, Direct direct);
+        MazeWayData getWayData(int initX, int initY);
 };
 #endif

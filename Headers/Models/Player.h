@@ -38,11 +38,11 @@ class Player
         void moveRight();
 
     public:
-        void setForwardDirect(Direct);
-        void setIsOnMove(bool);
+        void setForwardDirect(Direct direct);
+        void setIsOnMove(bool isOnMove);
 
     public:
-        void setMap(Map*);
+        void setMap(Map* pMap);
         void reset();
         void move();
 
