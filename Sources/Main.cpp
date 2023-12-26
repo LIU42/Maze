@@ -1,28 +1,13 @@
 #include "MainWindow.h"
 
-void setHighDPIScalePolicy()
-{
-    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
-}
-
-void setRandomSeed()
-{
-    srand((unsigned)time(NULL));
-}
-
 int main(int argc, char* argv[])
 {
-    setHighDPIScalePolicy();
-    setRandomSeed();
-
-    QApplication app(argc, argv);
-    MainGame game;
+    QApplication application(argc, argv);
     MainWindow window;
 
-    app.setStyle("windows");
-    window.setGame(&game);
-    window.initialize();
+    application.setStyle("windows");
+    window.init();
     window.show();
 
-    return app.exec();
+    return application.exec();
 }

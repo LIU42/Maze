@@ -25,25 +25,19 @@ void SuccessDialog::connectButtons()
 
 void SuccessDialog::setDialogInfo(int elapseTime, bool isHaveTracked)
 {
-    QString timeInfo = QString("TIME: %1s").arg(elapseTime);
-
-    if (isHaveTracked)
-    {
-        timeInfo.append(" (Tracked)");
-    }
-    ui->pTimeLabel->setText(timeInfo);
+    ui->pTimeLabel->setText(QString("TIME: %1s %2").arg(elapseTime).arg((isHaveTracked) ? "(Tracked)" : ""));
 }
 
 void SuccessDialog::showDialog()
 {
     isNeedRestart = false;
-    QDialog::exec();
+    exec();
 }
 
 void SuccessDialog::closeDialog()
 {
     isNeedRestart = true;
-    QDialog::close();
+    close();
 }
 
 bool SuccessDialog::getIsNeedRestart()

@@ -7,7 +7,7 @@
 #include <QKeyEvent>
 
 #include "Dialogs/Success.h"
-#include "Models/Maze.h"
+#include "Games/MainGame.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -20,13 +20,17 @@ QT_END_NAMESPACE
 
 class GameTimers
 {
-    public:
-        static const int CLOCK_INTERVAL = 1000;
-        static const int GAME_FPS = 60;
+    private:
+        static constexpr int CLOCK_INTERVAL = 1000;
+        static constexpr int FRAME_INTERVAL = 16;
 
     public:
-        QTimer interval;
-        QTimer clock;
+        QTimer* pFrameTimer;
+        QTimer* pClockTimer;
+
+    public:
+        GameTimers(QWidget* parent = nullptr);
+        ~GameTimers();
 };
 
 class MainWindow : public QMainWindow
@@ -35,21 +39,19 @@ class MainWindow : public QMainWindow
 
     private:
         Ui::MainWindow* ui;
-        MainGame* pGame;
-        SuccessDialog* pSuccessDialog;
 
     private:
-        GameTimers timers;
+        SuccessDialog* pSuccessDialog;
+        MainGame* pMainGame;
+        GameTimers* pGameTimers;
 
     private:
         bool isKeyPress[MazeBlockUnit::DIRECT_COUNT];
         int elapseTime;
 
     private:
-        void setInterval();
         void connectTimers();
         void connectButtons();
-        void startTimers();
 
     private:
         void mainInterval();
@@ -61,15 +63,14 @@ class MainWindow : public QMainWindow
         void restartGame();
 
     private:
-        void keyPressEvent(QKeyEvent* pKeyEvent);
-        void keyReleaseEvent(QKeyEvent* pKeyEvent);
+        void keyPressEvent(QKeyEvent* pKeyEvent) override;
+        void keyReleaseEvent(QKeyEvent* pKeyEvent) override;
 
     public:
         MainWindow(QWidget* parent = nullptr);
         ~MainWindow();
 
     public:
-        void setGame(MainGame* pGame);
-        void initialize();
+        void init();
 };
 #endif

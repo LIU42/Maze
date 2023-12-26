@@ -1,62 +1,71 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
+GameTimers::GameTimers(QWidget* parent)
+{
+    pFrameTimer = new QTimer(parent);
+    pFrameTimer->setInterval(FRAME_INTERVAL);
+    pFrameTimer->start();
+
+    pClockTimer = new QTimer(parent);
+    pClockTimer->setInterval(CLOCK_INTERVAL);
+    pClockTimer->start();
+}
+
+GameTimers::~GameTimers()
+{
+    delete pFrameTimer;
+    delete pClockTimer;
+}
+
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
     pSuccessDialog = new SuccessDialog(this);
+    pMainGame = new MainGame();
+    pGameTimers = new GameTimers(this);
+
+    ui->setupUi(this);
+    ui->pGraphicsWidget->setMainGame(pMainGame);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
     delete pSuccessDialog;
+    delete pMainGame;
+    delete pGameTimers;
 }
 
-void MainWindow::setGame(MainGame* pGame)
+void MainWindow::init()
 {
-    this->pGame = pGame;
-    ui->pGraphics->setGame(pGame);
-}
-
-void MainWindow::initialize()
-{
-    setInterval();
     connectTimers();
     connectButtons();
-    startTimers();
     restartGame();
 }
 
 void MainWindow::mainInterval()
 {
-    if (pGame->isInMainLoop())
+    if (pMainGame->isInMainLoop())
     {
         updateElapseTime();
         gamePlayerMove();
         gameover();
     }
-    ui->pGraphics->update();
+    ui->pGraphicsWidget->update();
 }
 
 void MainWindow::clockCallBack()
 {
-    if (pGame->isInMainLoop())
+    if (pMainGame->isInMainLoop())
     {
         elapseTime += 1;
     }
 }
 
-void MainWindow::setInterval()
-{
-    timers.interval.setInterval(1000 / GameTimers::GAME_FPS);
-    timers.clock.setInterval(GameTimers::CLOCK_INTERVAL);
-}
-
 void MainWindow::connectTimers()
 {
-    connect(&timers.interval, &QTimer::timeout, this, &MainWindow::mainInterval);
-    connect(&timers.clock, &QTimer::timeout, this, &MainWindow::clockCallBack);
+    connect(pGameTimers->pFrameTimer, &QTimer::timeout, this, &MainWindow::mainInterval);
+    connect(pGameTimers->pClockTimer, &QTimer::timeout, this, &MainWindow::clockCallBack);
 }
 
 void MainWindow::connectButtons()
@@ -65,20 +74,14 @@ void MainWindow::connectButtons()
     connect(ui->pFindButton, &QPushButton::clicked, this, &MainWindow::gameFindWay);
 }
 
-void MainWindow::startTimers()
-{
-    timers.interval.start();
-    timers.clock.start();
-}
-
 void MainWindow::restartGame()
 {
-    pGame->restart();
-    ui->pGraphics->clearWayData();
+    pMainGame->restart();
+    ui->pGraphicsWidget->clearWayBlockList();
 
-    for (int direct = DIRECT_UP; direct <= DIRECT_RIGHT; direct++)
+    for (int index = 0; index < MazeBlockUnit::DIRECT_COUNT; index++)
     {
-        isKeyPress[direct] = false;
+        isKeyPress[index] = false;
     }
     elapseTime = 0;
 }
@@ -90,20 +93,20 @@ void MainWindow::updateElapseTime()
 
 void MainWindow::gameFindWay()
 {
-    ui->pGraphics->updateWayData();
+    ui->pGraphicsWidget->updateWayBlockList();
 }
 
 void MainWindow::gamePlayerMove()
 {
-    pGame->setKeyStatus(isKeyPress);
-    pGame->playerMove();
+    pMainGame->setKeyStatus(isKeyPress);
+    pMainGame->playerMove();
 }
 
 void MainWindow::gameover()
 {
-    if (pGame->isGameover())
+    if (pMainGame->isGameover())
     {
-        pSuccessDialog->setDialogInfo(elapseTime, pGame->getIsHaveTracked());
+        pSuccessDialog->setDialogInfo(elapseTime, pMainGame->getIsHaveTracked());
         pSuccessDialog->showDialog();
 
         if (pSuccessDialog->getIsNeedRestart())
@@ -117,10 +120,10 @@ void MainWindow::keyPressEvent(QKeyEvent* pKeyEvent)
 {
     switch (pKeyEvent->key())
     {
-        case Qt::Key_W: isKeyPress[DIRECT_UP] = true; break;
-        case Qt::Key_S: isKeyPress[DIRECT_DOWN] = true; break;
-        case Qt::Key_A: isKeyPress[DIRECT_LEFT] = true; break;
-        case Qt::Key_D: isKeyPress[DIRECT_RIGHT] = true; break;
+        case Qt::Key_W: isKeyPress[(int)Direct::DIRECT_UP] = true; break;
+        case Qt::Key_S: isKeyPress[(int)Direct::DIRECT_DOWN] = true; break;
+        case Qt::Key_A: isKeyPress[(int)Direct::DIRECT_LEFT] = true; break;
+        case Qt::Key_D: isKeyPress[(int)Direct::DIRECT_RIGHT] = true; break;
     }
 }
 
@@ -128,9 +131,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent* pKeyEvent)
 {
     switch (pKeyEvent->key())
     {
-        case Qt::Key_W: isKeyPress[DIRECT_UP] = false; break;
-        case Qt::Key_S: isKeyPress[DIRECT_DOWN] = false; break;
-        case Qt::Key_A: isKeyPress[DIRECT_LEFT] = false; break;
-        case Qt::Key_D: isKeyPress[DIRECT_RIGHT] = false; break;
+        case Qt::Key_W: isKeyPress[(int)Direct::DIRECT_UP] = false; break;
+        case Qt::Key_S: isKeyPress[(int)Direct::DIRECT_DOWN] = false; break;
+        case Qt::Key_A: isKeyPress[(int)Direct::DIRECT_LEFT] = false; break;
+        case Qt::Key_D: isKeyPress[(int)Direct::DIRECT_RIGHT] = false; break;
     }
 }

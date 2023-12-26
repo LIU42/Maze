@@ -4,15 +4,19 @@
 #include <QWidget>
 #include <QPainter>
 
-#include "Models/Maze.h"
+#include "Games/MainGame.h"
 
 class GameImages
 {
     public:
-        QPixmap way;
-        QPixmap finish;
-        QPixmap player;
-        QPixmap wall[MazeBlockUnit::DIRECT_COUNT];
+        QPixmap* pWayPixmap;
+        QPixmap* pFinishPixmap;
+        QPixmap* pPlayerPixmap;
+        QPixmap* pWallPixmaps[MazeBlockUnit::DIRECT_COUNT];
+
+    public:
+        GameImages();
+        ~GameImages();
 };
 
 class GraphicsWidget : public QWidget
@@ -20,33 +24,32 @@ class GraphicsWidget : public QWidget
     Q_OBJECT
 
     private:
-        static const int BORDER = 20;
-        static const int WALL_WIDTH = 3;
+        static constexpr int REGION_BORDER = 20;
+        static constexpr int WALL_WIDTH = 3;
 
     private:
-        MainGame* pGame;
+        MainGame* pMainGame;
+        GameImages* pGameImages;
 
     private:
-        GameImages images;
-        MazeWayData wayData;
+        QList<MazeBlock> wayBlockList;
+        int wayBlockPaintIndex;
 
     private:
-        int wayDisplayIndex;
-
-    private:
-        void paintMap(QPainter& painter);
-        void paintWay(QPainter& painter);
+        void paintMazeMap(QPainter& painter);
+        void paintWayBlock(QPainter& painter);
         void paintPlayer(QPainter& painter);
 
     private:
-        void paintEvent(QPaintEvent* pPaintEvent);
+        void paintEvent(QPaintEvent*) override;
 
     public:
         GraphicsWidget(QWidget* parent = nullptr);
+        ~GraphicsWidget();
 
     public:
-        void setGame(MainGame* pGame);
-        void updateWayData();
-        void clearWayData();
+        void setMainGame(MainGame* pMainGame);
+        void updateWayBlockList();
+        void clearWayBlockList();
 };
 #endif

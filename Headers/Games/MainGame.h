@@ -1,10 +1,10 @@
-#ifndef __MODELS_MAZE_H__
-#define __MODELS_MAZE_H__
+#ifndef __GAMES_MAINGAME_H__
+#define __GAMES_MAINGAME_H__
 
-#include "Models/Map.h"
-#include "Models/Player.h"
+#include "Games/MazeMap.h"
+#include "Games/Player.h"
 
-enum GameStatus
+enum class GameStatus
 {
     STATUS_MAINLOOP,
     STATUS_GAMEOVER
@@ -13,16 +13,19 @@ enum GameStatus
 class MainGame
 {
     private:
-        MazeWayData wayData;
         GameStatus status;
 
     private:
-        Map map;
-        Player player;
+        MazeMap* pMazeMap;
+        Player* pPlayer;
 
     private:
         bool isKeyPress[MazeBlockUnit::DIRECT_COUNT];
         bool isHaveTracked;
+
+    public:
+        MainGame();
+        ~MainGame();
 
     public:
         void setKeyStatus(bool isKeyPress[]);
@@ -31,7 +34,7 @@ class MainGame
         void restart();
 
     public:
-        MazeWayData getWayData();
+        QList<MazeBlock> getWayBlockList();
 
     public:
         int getPlayerX();

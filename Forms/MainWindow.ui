@@ -134,7 +134,7 @@ QPushButton:hover
      </property>
     </widget>
    </widget>
-   <widget class="GraphicsWidget" name="pGraphics" native="true">
+   <widget class="GraphicsWidget" name="pGraphicsWidget" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>

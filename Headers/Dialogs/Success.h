@@ -18,6 +18,8 @@ class SuccessDialog : public QDialog
 
     private:
         Ui::SuccessDialog *ui;
+
+    private:
         bool isNeedRestart;
 
     private:

@@ -14,17 +14,17 @@ SOURCES += \
     Sources/Graphics.cpp \
     Sources/Main.cpp \
     Sources/MainWindow.cpp \
-	Sources/Models/Map.cpp \
-	Sources/Models/Maze.cpp \
-	Sources/Models/Player.cpp \
+	Sources/Games/MainGame.cpp \
+	Sources/Games/MazeMap.cpp \
+	Sources/Games/Player.cpp \
 	Sources/Dialogs/Success.cpp
 
 HEADERS += \
     Headers/Graphics.h \
     Headers/MainWindow.h \
-	Headers/Models/Map.h \
-	Headers/Models/Maze.h \
-	Headers/Models/Player.h \
+	Headers/Games/MainGame.h \
+	Headers/Games/MazeMap.h \
+	Headers/Games/Player.h \
 	Headers/Dialogs/Success.h
 
 FORMS += \
