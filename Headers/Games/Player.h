@@ -9,9 +9,9 @@ using RoundIndex = QPoint;
 class Player
 {
     private:
-        static constexpr int MOVE_SPEED = 5;
-        static constexpr int INIT_POSITION_X = 20;
-        static constexpr int INIT_POSITION_Y = 20;
+        static constexpr int MOVE_SPEED = 4;
+        static constexpr int INIT_POSITION_X = 16;
+        static constexpr int INIT_POSITION_Y = 16;
 
     private:
         MazeMap* pMazeMap;

@@ -24,8 +24,8 @@ class GraphicsWidget : public QWidget
     Q_OBJECT
 
     private:
-        static constexpr int REGION_BORDER = 20;
-        static constexpr int WALL_WIDTH = 3;
+        static constexpr int REGION_BORDER = 16;
+        static constexpr int WALL_WIDTH = 2;
 
     private:
         MainGame* pMainGame;

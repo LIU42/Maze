@@ -19,7 +19,7 @@ namespace Ui
 QT_END_NAMESPACE
 
 class GameTimers
-{
+{  
     private:
         static constexpr int CLOCK_INTERVAL = 1000;
         static constexpr int FRAME_INTERVAL = 16;
@@ -59,7 +59,7 @@ class MainWindow : public QMainWindow
         void updateElapseTime();
         void gameFindWay();
         void gamePlayerMove();
-        void gameover();
+        void gameoverHandler();
         void restartGame();
 
     private:

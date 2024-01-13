@@ -49,7 +49,7 @@ void MainWindow::mainInterval()
     {
         updateElapseTime();
         gamePlayerMove();
-        gameover();
+        gameoverHandler();
     }
     ui->pGraphicsWidget->update();
 }
@@ -102,7 +102,7 @@ void MainWindow::gamePlayerMove()
     pMainGame->playerMove();
 }
 
-void MainWindow::gameover()
+void MainWindow::gameoverHandler()
 {
     if (pMainGame->isGameover())
     {

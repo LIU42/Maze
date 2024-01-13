@@ -20,7 +20,7 @@ enum class Direct
 class MazeBlockUnit
 {
     public:
-        static constexpr int BLOCK_SIZE = 30;
+        static constexpr int BLOCK_SIZE = 24;
         static constexpr int DIRECT_COUNT = 4;
 
     public:
