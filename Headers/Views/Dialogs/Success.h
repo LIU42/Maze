@@ -1,5 +1,5 @@
-#ifndef __DIALOGS_SUCCESS_H__
-#define __DIALOGS_SUCCESS_H__
+#ifndef __VIEWS_DIALOGS_SUCCESS_H__
+#define __VIEWS_DIALOGS_SUCCESS_H__
 
 #include <QDialog>
 
@@ -20,22 +20,18 @@ class SuccessDialog : public QDialog
         Ui::SuccessDialog *ui;
 
     private:
-        bool isNeedRestart;
-
-    private:
-        void setDialogFlags();
-        void connectButtons();
+        bool needRestart;
 
     public:
         SuccessDialog(QWidget* parent = nullptr);
         ~SuccessDialog();
 
     public:
-        void setDialogInfo(int elapseTime, bool isHaveTracked);
-        void showDialog();
-        void closeDialog();
+        void setInfo(int elapseTime, bool isHaveTracked);
+        void show();
+        void close();
 
     public:
-        bool getIsNeedRestart();
+        bool isNeedRestart();
 };
 #endif

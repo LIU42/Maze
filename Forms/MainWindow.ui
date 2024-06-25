@@ -134,7 +134,7 @@ QPushButton:hover
      </property>
     </widget>
    </widget>
-   <widget class="GraphicsWidget" name="pGraphicsWidget" native="true">
+   <widget class="SceneWidget" name="pSceneWidget" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -160,9 +160,9 @@ QPushButton:hover
  </widget>
  <customwidgets>
   <customwidget>
-   <class>GraphicsWidget</class>
+   <class>SceneWidget</class>
    <extends>QWidget</extends>
-   <header>Graphics.h</header>
+   <header>Headers/Views/Widgets/Scene.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -1,13 +1,13 @@
-#ifndef __MAINWINDOW_H__
-#define __MAINWINDOW_H__
+#ifndef __VIEWS_MAINWINDOW_H__
+#define __VIEWS_MAINWINDOW_H__
 
-#include <QApplication>
 #include <QMainWindow>
 #include <QTimer>
 #include <QKeyEvent>
 
-#include "Dialogs/Success.h"
-#include "Games/MainGame.h"
+#include "Engines/MainGame.h"
+
+#include "Views/Dialogs/Success.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -18,35 +18,27 @@ namespace Ui
 
 QT_END_NAMESPACE
 
-class GameTimers
-{  
-    private:
-        static constexpr int CLOCK_INTERVAL = 1000;
-        static constexpr int FRAME_INTERVAL = 16;
-
-    public:
-        QTimer* pFrameTimer;
-        QTimer* pClockTimer;
-
-    public:
-        GameTimers(QWidget* parent = nullptr);
-        ~GameTimers();
-};
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
     private:
+        static constexpr int CLOCK_INTERVAL = 1000;
+        static constexpr int FRAME_INTERVAL = 16;
+
+    private:
         Ui::MainWindow* ui;
 
     private:
-        SuccessDialog* pSuccessDialog;
-        MainGame* pMainGame;
-        GameTimers* pGameTimers;
+        QTimer* pFrameTimer;
+        QTimer* pClockTimer;
 
     private:
-        bool isKeyPress[MazeBlockUnit::DIRECT_COUNT];
+        MainGame* pMainGame;
+        SuccessDialog* pSuccessDialog;
+
+    private:
+        bool keyPress[MapUnit::DIRECT_COUNT];
         int elapseTime;
 
     private:
@@ -57,10 +49,12 @@ class MainWindow : public QMainWindow
         void mainInterval();
         void clockCallBack();
         void updateElapseTime();
-        void gameFindWay();
-        void gamePlayerMove();
-        void gameoverHandler();
-        void restartGame();
+
+    private:
+        void findWay();
+        void playerMove();
+        void gameover();
+        void restart();
 
     private:
         void keyPressEvent(QKeyEvent* pKeyEvent) override;

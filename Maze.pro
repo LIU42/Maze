@@ -11,25 +11,29 @@ CONFIG += c++17
 INCLUDEPATH += $$PWD/Headers/
 
 SOURCES += \
-    Sources/Graphics.cpp \
-    Sources/Main.cpp \
-    Sources/MainWindow.cpp \
-	Sources/Games/MainGame.cpp \
-	Sources/Games/MazeMap.cpp \
-	Sources/Games/Player.cpp \
-	Sources/Dialogs/Success.cpp
+	Sources/Engines/MainGame.cpp \
+	Sources/Engines/Map.cpp \
+	Sources/Engines/Player.cpp \
+	Sources/Engines/Point.cpp \
+	Sources/Modules/Resources.cpp \
+	Sources/Views/Dialogs/Success.cpp \
+	Sources/Views/MainWindow.cpp \
+	Sources/Main.cpp \
+	Sources/Views/Widgets/Scene.cpp
 
 HEADERS += \
-    Headers/Graphics.h \
-    Headers/MainWindow.h \
-	Headers/Games/MainGame.h \
-	Headers/Games/MazeMap.h \
-	Headers/Games/Player.h \
-	Headers/Dialogs/Success.h
+	Headers/Engines/MainGame.h \
+	Headers/Engines/Map.h \
+	Headers/Engines/Player.h \
+	Headers/Engines/Point.h \
+	Headers/Modules/Resources.h \
+	Headers/Views/Dialogs/Success.h \
+	Headers/Views/MainWindow.h \
+	Headers/Views/Widgets/Scene.h
 
 FORMS += \
-	Forms/MainWindow.ui \
-	Forms/Dialogs/Success.ui
+	Forms/Dialogs/Success.ui \
+	Forms/MainWindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
