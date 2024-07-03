@@ -162,7 +162,7 @@ QPushButton:hover
   <customwidget>
    <class>SceneWidget</class>
    <extends>QWidget</extends>
-   <header>include/views/widgets/scene.h</header>
+   <header>include/views/widgets/scenewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

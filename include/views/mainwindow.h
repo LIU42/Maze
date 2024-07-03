@@ -6,7 +6,7 @@
 #include <QKeyEvent>
 
 #include "engines/controller.h"
-#include "views/dialogs/success.h"
+#include "views/dialogs/successdialog.h"
 
 QT_BEGIN_NAMESPACE
 

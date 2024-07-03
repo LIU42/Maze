@@ -1,5 +1,5 @@
-#ifndef __VIEWS_WIDGETS_SCENE_H__
-#define __VIEWS_WIDGETS_SCENE_H__
+#ifndef __VIEWS_WIDGETS_SCENEWIDGET_H__
+#define __VIEWS_WIDGETS_SCENEWIDGET_H__
 
 #include <QPainter>
 #include <QWidget>

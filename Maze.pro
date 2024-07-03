@@ -16,10 +16,10 @@ SOURCES += \
 	src/engines/player.cpp \
 	src/engines/point.cpp \
 	src/modules/resources.cpp \
-	src/views/dialogs/success.cpp \
+	src/views/dialogs/successdialog.cpp \
 	src/views/mainwindow.cpp \
 	src/main.cpp \
-	src/views/widgets/scene.cpp
+	src/views/widgets/scenewidget.cpp
 
 HEADERS += \
 	include/engines/controller.h \
@@ -27,12 +27,12 @@ HEADERS += \
 	include/engines/player.h \
 	include/engines/point.h \
 	include/modules/resources.h \
-	include/views/dialogs/success.h \
+	include/views/dialogs/successdialog.h \
 	include/views/mainwindow.h \
-	include/views/widgets/scene.h
+	include/views/widgets/scenewidget.h
 
 FORMS += \
-	ui/dialogs/success.ui \
+	ui/dialogs/successdialog.ui \
 	ui/mainwindow.ui
 
 # Default rules for deployment.
