@@ -2,45 +2,46 @@
 
 SceneWidget::SceneWidget(QWidget* parent): QWidget(parent)
 {
-    pImages = ResourceManager::getImages();
+    pGameController = nullptr;
+    pGameResources = nullptr;
 }
 
 void SceneWidget::paintMap(QPainter& painter)
 {
-    for (int row = 0; row < Map::MAP_ROWS; row++)
+    for (int row = 0; row < MapProperties::ROWS; row++)
     {
-        for (int col = 0; col < Map::MAP_COLS; col++)
+        for (int col = 0; col < MapProperties::COLS; col++)
         {
-            for (int directCode = 0; directCode < MapUnit::DIRECT_COUNT; directCode++)
+            for (int index = 0; index < DirectIndex::COUNT; index++)
             {
-                if (pGameController->isMapHaveWall(row, col, (Direct)directCode))
+                if (pGameController->isMapHaveWall(row, col, index))
                 {
-                    int x = MapUnit::BLOCK_SIZE * row + REGION_BORDER - WALL_WIDTH;
-                    int y = MapUnit::BLOCK_SIZE * col + REGION_BORDER - WALL_WIDTH;
+                    int x = MapProperties::BLOCK_SIZE * row + MapProperties::BORDER - MapProperties::WALL_WIDTH;
+                    int y = MapProperties::BLOCK_SIZE * col + MapProperties::BORDER - MapProperties::WALL_WIDTH;
 
-                    painter.drawPixmap(x, y, *pImages->getWallPixmap(directCode));
+                    painter.drawPixmap(x, y, *pGameResources->getWallPixmap(index));
                 }
             }
         }
     }
-    int x = MapUnit::BLOCK_SIZE * (Map::MAP_ROWS - 1) + REGION_BORDER;
-    int y = MapUnit::BLOCK_SIZE * (Map::MAP_COLS - 1) + REGION_BORDER;
+    int x = MapProperties::BLOCK_SIZE * (MapProperties::ROWS - 1) + MapProperties::BORDER;
+    int y = MapProperties::BLOCK_SIZE * (MapProperties::COLS - 1) + MapProperties::BORDER;
 
-    painter.drawPixmap(x, y, *pImages->getFinishPixmap());
+    painter.drawPixmap(x, y, *pGameResources->getFinishPixmap());
 }
 
 void SceneWidget::paintWay(QPainter& painter)
 {
-    if (wayBlockList.isEmpty())
+    if (wayBlocks.isEmpty())
     {
         return;
     }
-    for (int i = wayBlockList.length() - 1; i >= wayBlocksPaintIndex; i--)
+    for (int i = wayBlocks.length() - 1; i >= wayBlocksPaintIndex; i--)
     {
-        int x = wayBlockList[i].getX() * MapUnit::BLOCK_SIZE + REGION_BORDER;
-        int y = wayBlockList[i].getY() * MapUnit::BLOCK_SIZE + REGION_BORDER;
+        int x = wayBlocks[i].getX() * MapProperties::BLOCK_SIZE + MapProperties::BORDER;
+        int y = wayBlocks[i].getY() * MapProperties::BLOCK_SIZE + MapProperties::BORDER;
 
-        painter.drawPixmap(x, y, *pImages->getWayPixmap());
+        painter.drawPixmap(x, y, *pGameResources->getWayPixmap());
     }
     if (wayBlocksPaintIndex > 0)
     {
@@ -53,7 +54,7 @@ void SceneWidget::paintPlayer(QPainter& painter)
     int playerX = pGameController->getPlayerX();
     int playerY = pGameController->getPlayerY();
 
-    painter.drawPixmap(playerX, playerY, *pImages->getPlayerPixmap());
+    painter.drawPixmap(playerX, playerY, *pGameResources->getPlayerPixmap());
 }
 
 void SceneWidget::paintEvent(QPaintEvent*)
@@ -70,14 +71,19 @@ void SceneWidget::setGameController(GameController* pGameController)
     this->pGameController = pGameController;
 }
 
-void SceneWidget::updateWay()
+void SceneWidget::setGameResources(GameResources* pGameResources)
 {
-    wayBlockList = pGameController->getWayBlockList();
-    wayBlocksPaintIndex = wayBlockList.length() - 1;
+    this->pGameResources = pGameResources;
 }
 
-void SceneWidget::clearWay()
+void SceneWidget::updateWayBlocks()
 {
-    wayBlockList.clear();
+    wayBlocks = pGameController->getWayBlocks();
+    wayBlocksPaintIndex = wayBlocks.length();
+}
+
+void SceneWidget::clearWayBlocks()
+{
+    wayBlocks.clear();
     wayBlocksPaintIndex = 0;
 }

@@ -11,22 +11,23 @@ CONFIG += c++17
 INCLUDEPATH += $$PWD/include/
 
 SOURCES += \
-	src/engines/controller.cpp \
-	src/engines/map.cpp \
-	src/engines/player.cpp \
-	src/engines/point.cpp \
-	src/modules/resources.cpp \
+	src/cores/controller.cpp \
+	src/cores/map.cpp \
+	src/cores/player.cpp \
+	src/commons/resources.cpp \
+	src/cores/points.cpp \
 	src/views/dialogs/successdialog.cpp \
 	src/views/mainwindow.cpp \
 	src/main.cpp \
 	src/views/widgets/scenewidget.cpp
 
 HEADERS += \
-	include/engines/controller.h \
-	include/engines/map.h \
-	include/engines/player.h \
-	include/engines/point.h \
-	include/modules/resources.h \
+	include/commons/constants.h \
+	include/cores/controller.h \
+	include/cores/map.h \
+	include/cores/player.h \
+	include/commons/resources.h \
+	include/cores/points.h \
 	include/views/dialogs/successdialog.h \
 	include/views/mainwindow.h \
 	include/views/widgets/scenewidget.h

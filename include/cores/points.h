@@ -1,5 +1,5 @@
-#ifndef __ENGINES_POINT_H__
-#define __ENGINES_POINT_H__
+#ifndef __CORES_POINTS_H__
+#define __CORES_POINTS_H__
 
 class IntPoint
 {

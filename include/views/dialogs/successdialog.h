@@ -27,7 +27,7 @@ class SuccessDialog : public QDialog
         ~SuccessDialog();
 
     public:
-        void setInfo(int elapseTime, bool isHaveTracked);
+        void setInfo(int elapseTime, bool tracked);
         void show();
         void close();
 

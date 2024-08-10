@@ -5,7 +5,8 @@
 #include <QTimer>
 #include <QKeyEvent>
 
-#include "engines/controller.h"
+#include "commons/resources.h"
+#include "cores/controller.h"
 #include "views/dialogs/successdialog.h"
 
 QT_BEGIN_NAMESPACE
@@ -22,10 +23,6 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     private:
-        static constexpr int CLOCK_INTERVAL = 1000;
-        static constexpr int FRAME_INTERVAL = 16;
-
-    private:
         Ui::MainWindow* ui;
 
     private:
@@ -34,25 +31,16 @@ class MainWindow : public QMainWindow
 
     private:
         GameController* pGameController;
+        GameResources* pGameResources;
+
+    private:
         SuccessDialog* pSuccessDialog;
 
     private:
-        bool keyPress[MapUnit::DIRECT_COUNT];
+        bool keyInputs[DirectIndex::COUNT];
         int elapseTime;
 
     private:
-        void connectTimers();
-        void connectButtons();
-
-    private:
-        void mainInterval();
-        void clockCallBack();
-        void updateElapseTime();
-
-    private:
-        void findWay();
-        void playerMove();
-        void gameover();
         void restart();
 
     private:

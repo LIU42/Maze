@@ -4,23 +4,19 @@
 #include <QPainter>
 #include <QWidget>
 
-#include "engines/controller.h"
-#include "modules/resources.h"
+#include "commons/resources.h"
+#include "cores/controller.h"
 
 class SceneWidget : public QWidget
 {
     Q_OBJECT
 
     private:
-        static constexpr int REGION_BORDER = 16;
-        static constexpr int WALL_WIDTH = 2;
-
-    private:
         GameController* pGameController;
-        ResourceImages* pImages;
+        GameResources* pGameResources;
 
     private:
-        QList<MapBlock> wayBlockList;
+        QList<MapBlock> wayBlocks;
 
     private:
         int wayBlocksPaintIndex;
@@ -38,7 +34,10 @@ class SceneWidget : public QWidget
 
     public:
         void setGameController(GameController* pGameController);
-        void updateWay();
-        void clearWay();
+        void setGameResources(GameResources* pGameResources);
+
+    public:
+        void updateWayBlocks();
+        void clearWayBlocks();
 };
 #endif

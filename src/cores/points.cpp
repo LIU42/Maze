@@ -1,4 +1,4 @@
-#include "engines/point.h"
+#include "cores/points.h"
 
 IntPoint::IntPoint()
 {
