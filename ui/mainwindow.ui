@@ -109,7 +109,7 @@ QPushButton:hover
       <string/>
      </property>
     </widget>
-    <widget class="QPushButton" name="pFindWayButton">
+    <widget class="QPushButton" name="pTrackButton">
      <property name="geometry">
       <rect>
        <x>642</x>

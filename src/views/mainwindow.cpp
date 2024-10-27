@@ -67,7 +67,7 @@ void MainWindow::init()
         restart();
     });
 
-    connect(ui->pFindWayButton, &QPushButton::clicked, this, [=]
+    connect(ui->pTrackButton, &QPushButton::clicked, this, [=]
     {
         ui->pSceneWidget->updateWayBlocks();
     });
