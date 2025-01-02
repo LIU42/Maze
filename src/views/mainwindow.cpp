@@ -12,12 +12,12 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent), ui(new Ui::MainWin
     pClockTimer->setInterval(Interval::CLOCK);
     pClockTimer->start();
 
-    pGameController = new GameController(keyInputs);
+    pGameEnvironment = new GameEnvironment(keyInputs);
     pGameResources = new GameResources();
     pSuccessDialog = new SuccessDialog(this);
 
     ui->setupUi(this);
-    ui->pSceneWidget->setGameController(pGameController);
+    ui->pSceneWidget->setGameEnvironment(pGameEnvironment);
     ui->pSceneWidget->setGameResources(pGameResources);
 }
 
@@ -27,7 +27,7 @@ MainWindow::~MainWindow()
     delete pSuccessDialog;
     delete pFrameTimer;
     delete pClockTimer;
-    delete pGameController;
+    delete pGameEnvironment;
     delete pGameResources;
 }
 
@@ -35,13 +35,13 @@ void MainWindow::init()
 {
     connect(pFrameTimer, &QTimer::timeout, this, [=]
     {
-        if (pGameController->isPlaying())
+        if (pGameEnvironment->isPlaying())
         {
-            pGameController->playerMove();
+            pGameEnvironment->playerMove();
 
-            if (pGameController->isGameover())
+            if (pGameEnvironment->isGameover())
             {
-                pSuccessDialog->setInfo(elapseTime, pGameController->hasTracked());
+                pSuccessDialog->setInfo(elapseTime, pGameEnvironment->hasTracked());
                 pSuccessDialog->show();
 
                 if (pSuccessDialog->isNeedRestart())
@@ -56,7 +56,7 @@ void MainWindow::init()
 
     connect(pClockTimer, &QTimer::timeout, this, [=]
     {
-        if (pGameController->isPlaying())
+        if (pGameEnvironment->isPlaying())
         {
             elapseTime += 1;
         }
@@ -65,6 +65,11 @@ void MainWindow::init()
     connect(ui->pRestartButton, &QPushButton::clicked, this, [=]
     {
         restart();
+    });
+
+    connect(ui->pFogButton, &QPushButton::clicked, this, [=]
+    {
+        pGameEnvironment->switchFogMode();
     });
 
     connect(ui->pTrackButton, &QPushButton::clicked, this, [=]
@@ -76,7 +81,7 @@ void MainWindow::init()
 
 void MainWindow::restart()
 {  
-    pGameController->restart();
+    pGameEnvironment->restart();
     elapseTime = 0;
 
     for (int index = 0; index < DirectIndex::COUNT; index++)

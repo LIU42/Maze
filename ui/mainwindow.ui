@@ -133,6 +133,30 @@ QPushButton:hover
       <string/>
      </property>
     </widget>
+    <widget class="QPushButton" name="pFogButton">
+     <property name="geometry">
+      <rect>
+       <x>594</x>
+       <y>0</y>
+       <width>48</width>
+       <height>48</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton
+{	
+	image: url(:/images/fog_normal.png);
+	border: 0px;
+}
+QPushButton:hover
+{
+	image: url(:/images/fog_hover.png);
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="SceneWidget" name="pSceneWidget" native="true">
     <property name="geometry">
@@ -140,7 +164,7 @@ QPushButton:hover
       <x>0</x>
       <y>48</y>
       <width>752</width>
-      <height>640</height>
+      <height>512</height>
      </rect>
     </property>
     <property name="minimumSize">

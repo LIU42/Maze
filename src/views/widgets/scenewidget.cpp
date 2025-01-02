@@ -2,7 +2,7 @@
 
 SceneWidget::SceneWidget(QWidget* parent): QWidget(parent)
 {
-    pGameController = nullptr;
+    pGameEnvironment = nullptr;
     pGameResources = nullptr;
 }
 
@@ -14,7 +14,7 @@ void SceneWidget::paintMap(QPainter& painter)
         {
             for (int index = 0; index < DirectIndex::COUNT; index++)
             {
-                if (pGameController->isMapHaveWall(row, col, index))
+                if (pGameEnvironment->isMapHaveWall(row, col, index))
                 {
                     int x = MapProperties::BLOCK_SIZE * row + MapProperties::BORDER - MapProperties::WALL_WIDTH;
                     int y = MapProperties::BLOCK_SIZE * col + MapProperties::BORDER - MapProperties::WALL_WIDTH;
@@ -51,10 +51,23 @@ void SceneWidget::paintWay(QPainter& painter)
 
 void SceneWidget::paintPlayer(QPainter& painter)
 {
-    int playerX = pGameController->getPlayerX();
-    int playerY = pGameController->getPlayerY();
+    int playerX = pGameEnvironment->getPlayerX();
+    int playerY = pGameEnvironment->getPlayerY();
 
     painter.drawPixmap(playerX, playerY, *pGameResources->getPlayerPixmap());
+}
+
+void SceneWidget::paintFog(QPainter& painter)
+{
+    int playerCenterX = pGameEnvironment->getPlayerX() + MapProperties::BLOCK_SIZE / 2;
+    int playerCenterY = pGameEnvironment->getPlayerY() + MapProperties::BLOCK_SIZE / 2;
+
+    QRadialGradient radialGradient(playerCenterX, playerCenterY, MapProperties::VISIBLE_RADIUS);
+
+    radialGradient.setColorAt(1, Qt::black);
+    radialGradient.setColorAt(0, Qt::transparent);
+
+    painter.fillRect(0, 0, SceneProperties::WIDTH, SceneProperties::HEIGHT, radialGradient);
 }
 
 void SceneWidget::paintEvent(QPaintEvent*)
@@ -64,11 +77,16 @@ void SceneWidget::paintEvent(QPaintEvent*)
     paintWay(painter);
     paintMap(painter);
     paintPlayer(painter);
+
+    if (pGameEnvironment->isFogMode())
+    {
+        paintFog(painter);
+    }
 }
 
-void SceneWidget::setGameController(GameController* pGameController)
+void SceneWidget::setGameEnvironment(GameEnvironment* pGameEnvironment)
 {
-    this->pGameController = pGameController;
+    this->pGameEnvironment = pGameEnvironment;
 }
 
 void SceneWidget::setGameResources(GameResources* pGameResources)
@@ -78,7 +96,7 @@ void SceneWidget::setGameResources(GameResources* pGameResources)
 
 void SceneWidget::updateWayBlocks()
 {
-    wayBlocks = pGameController->getWayBlocks();
+    wayBlocks = pGameEnvironment->getWayBlocks();
     wayBlocksPaintIndex = wayBlocks.length();
 }
 

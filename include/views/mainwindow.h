@@ -6,7 +6,7 @@
 #include <QKeyEvent>
 
 #include "commons/resources.h"
-#include "cores/controller.h"
+#include "cores/environment.h"
 #include "views/dialogs/successdialog.h"
 
 QT_BEGIN_NAMESPACE
@@ -30,7 +30,7 @@ class MainWindow : public QMainWindow
         QTimer* pClockTimer;
 
     private:
-        GameController* pGameController;
+        GameEnvironment* pGameEnvironment;
         GameResources* pGameResources;
 
     private:

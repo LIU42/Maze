@@ -11,7 +11,7 @@ CONFIG += c++17
 INCLUDEPATH += $$PWD/include/
 
 SOURCES += \
-	src/cores/controller.cpp \
+	src/cores/environment.cpp \
 	src/cores/map.cpp \
 	src/cores/player.cpp \
 	src/commons/resources.cpp \
@@ -23,7 +23,7 @@ SOURCES += \
 
 HEADERS += \
 	include/commons/constants.h \
-	include/cores/controller.h \
+	include/cores/environment.h \
 	include/cores/map.h \
 	include/cores/player.h \
 	include/commons/resources.h \

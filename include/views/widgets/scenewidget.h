@@ -3,20 +3,22 @@
 
 #include <QPainter>
 #include <QWidget>
+#include <QRadialGradient>
 
 #include "commons/resources.h"
-#include "cores/controller.h"
+#include "cores/environment.h"
 
 class SceneWidget : public QWidget
 {
     Q_OBJECT
 
     private:
-        GameController* pGameController;
+        GameEnvironment* pGameEnvironment;
         GameResources* pGameResources;
 
     private:
         QList<MapBlock> wayBlocks;
+        QRadialGradient* pRadialGradient;
 
     private:
         int wayBlocksPaintIndex;
@@ -24,6 +26,7 @@ class SceneWidget : public QWidget
     private:
         void paintMap(QPainter& painter);
         void paintWay(QPainter& painter);
+        void paintFog(QPainter& painter);
         void paintPlayer(QPainter& painter);
 
     private:
@@ -33,7 +36,7 @@ class SceneWidget : public QWidget
         SceneWidget(QWidget* parent = nullptr);
 
     public:
-        void setGameController(GameController* pGameController);
+        void setGameEnvironment(GameEnvironment* pGameEnvironment);
         void setGameResources(GameResources* pGameResources);
 
     public:

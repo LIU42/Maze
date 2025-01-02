@@ -1,29 +1,30 @@
-#include "cores/controller.h"
+#include "cores/environment.h"
 
-GameController::GameController(bool* pKeyInputs)
+GameEnvironment::GameEnvironment(bool* pKeyInputs)
 {
     this->pKeyInputs = pKeyInputs;
     this->pMap = new Map();
     this->pPlayer = new Player(pMap);
 }
 
-GameController::~GameController()
+GameEnvironment::~GameEnvironment()
 {
     delete pMap;
     delete pPlayer;
 }
 
-void GameController::restart()
+void GameEnvironment::restart()
 {
     gameover = false;
     tracked = false;
+    fogMode = false;
 
     pMap->initUnits();
     pMap->generateMaze();
     pPlayer->reset();
 }
 
-void GameController::playerMove()
+void GameEnvironment::playerMove()
 {
     pPlayer->moveStop();
 
@@ -38,7 +39,12 @@ void GameController::playerMove()
     pPlayer->move();
 }
 
-QList<MapBlock> GameController::getWayBlocks()
+void GameEnvironment::switchFogMode()
+{
+    fogMode = !fogMode;
+}
+
+QList<MapBlock> GameEnvironment::getWayBlocks()
 {
     tracked = true;
 
@@ -48,27 +54,32 @@ QList<MapBlock> GameController::getWayBlocks()
     return pMap->getWayBlocks(playerX, playerY);
 }
 
-int GameController::getPlayerX()
+int GameEnvironment::getPlayerX()
 {
     return pPlayer->getX();
 }
 
-int GameController::getPlayerY()
+int GameEnvironment::getPlayerY()
 {
     return pPlayer->getY();
 }
 
-bool GameController::isPlaying()
-{
-    return !gameover;
-}
-
-bool GameController::hasTracked()
+bool GameEnvironment::hasTracked()
 {
     return tracked;
 }
 
-bool GameController::isGameover()
+bool GameEnvironment::isFogMode()
+{
+    return fogMode;
+}
+
+bool GameEnvironment::isPlaying()
+{
+    return !gameover;
+}
+
+bool GameEnvironment::isGameover()
 {
     double playerX = pPlayer->getFloatLocationX();
     double playerY = pPlayer->getFloatLocationY();
@@ -80,7 +91,7 @@ bool GameController::isGameover()
     return gameover;
 }
 
-bool GameController::isMapHaveWall(int x, int y, int directIndex)
+bool GameEnvironment::isMapHaveWall(int x, int y, int directIndex)
 {
     return pMap->hasWall(x, y, directIndex);
 }

@@ -19,6 +19,7 @@ class MapProperties
         static constexpr int COLS = 20;
         static constexpr int BLOCK_SIZE = 24;
         static constexpr int WALL_WIDTH = 2;
+        static constexpr int VISIBLE_RADIUS = 150;
 };
 
 class PlayerProperties
@@ -34,6 +35,13 @@ class Interval
     public:
         static constexpr int CLOCK = 1000;
         static constexpr int FRAME = 16;
+};
+
+class SceneProperties
+{
+    public:
+        static constexpr int WIDTH = 752;
+        static constexpr int HEIGHT = 512;
 };
 
 #endif

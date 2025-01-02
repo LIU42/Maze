@@ -12,5 +12,7 @@
         <file>images/find_normal.png</file>
         <file>images/player.png</file>
         <file>images/finish.png</file>
+        <file>images/fog_hover.png</file>
+        <file>images/fog_normal.png</file>
     </qresource>
 </RCC>

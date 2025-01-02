@@ -1,10 +1,10 @@
-#ifndef __CORES_CONTROLLER_H__
-#define __CORES_CONTROLLER_H__
+#ifndef __CORES_ENVIRONMENT_H__
+#define __CORES_ENVIRONMENT_H__
 
 #include "cores/map.h"
 #include "cores/player.h"
 
-class GameController
+class GameEnvironment
 {
     private:
         bool* pKeyInputs;
@@ -16,14 +16,16 @@ class GameController
     private:
         bool gameover;
         bool tracked;
+        bool fogMode;
 
     public:
-        GameController(bool* pKeyInputs);
-        ~GameController();
+        GameEnvironment(bool* pKeyInputs);
+        ~GameEnvironment();
 
     public:
         void playerMove();
         void restart();
+        void switchFogMode();
 
     public:
         QList<MapBlock> getWayBlocks();
@@ -34,6 +36,7 @@ class GameController
 
     public:
         bool hasTracked();
+        bool isFogMode();
         bool isPlaying();
         bool isGameover();
         bool isMapHaveWall(int x, int y, int directIndex);
