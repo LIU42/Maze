@@ -52,10 +52,10 @@
      <string notr="true">background-color: #FFFFFF;</string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::NoFrame</enum>
+     <enum>QFrame::Shape::NoFrame</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Shadow::Raised</enum>
     </property>
     <property name="lineWidth">
      <number>0</number>
@@ -211,7 +211,7 @@ QPushButton:hover
   <customwidget>
    <class>SceneWidget</class>
    <extends>QWidget</extends>
-   <header>views/widgets/scenewidget.h</header>
+   <header>views/scenewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

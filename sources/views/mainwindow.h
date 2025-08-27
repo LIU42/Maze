@@ -8,7 +8,7 @@
 
 #include "cores/framework.h"
 #include "utils/resources.h"
-#include "views/dialogs/successdialog.h"
+#include "views/successdialog.h"
 
 QT_BEGIN_NAMESPACE
 
